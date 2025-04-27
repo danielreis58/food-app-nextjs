@@ -1,5 +1,13 @@
 {
   "Location": {
     "DeliveringIn": "delivering in"
+  },
+  "SearchBar": {
+    "SearchPlaceholder": "search for store or cuisine"
+  },
+  "RestaurantList": {
+    "NoResults": "no results found",
+    "Open": "open",
+    "Closed": "closed"
   }
 }

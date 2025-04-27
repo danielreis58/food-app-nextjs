@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 
 import '@/styles/globals.css';
+import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={nunito.className}>{children}</body>
+      <body className={nunito.className}>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+      </body>
     </html>
   );
 }

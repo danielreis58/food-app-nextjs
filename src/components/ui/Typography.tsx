@@ -6,6 +6,7 @@ type TypographyVariant =
   | '14-bold-700'
   | '20-bold-700'
   | '20-bold-800'
+  | '20-extrabold-800'
   | '14-bold-800'
   | '14-semi-600'
   | '14-regular-400';
@@ -39,6 +40,7 @@ export const Typography = ({
     '14-bold-700': 'text-[14px] font-bold leading-[19px]',
     '20-bold-700': 'text-[20px] font-bold leading-[100%]',
     '20-bold-800': 'text-[20px] font-extrabold leading-[100%]',
+    '20-extrabold-800': 'text-[20px] font-extrabold leading-[100%]',
     '14-bold-800': 'text-[14px] font-extrabold leading-[100%]',
     '14-semi-600': 'text-[14px] font-semibold leading-[21px]',
     '14-regular-400': 'text-[14px] font-normal leading-[19px]',

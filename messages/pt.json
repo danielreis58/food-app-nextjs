@@ -1,5 +1,13 @@
 {
   "Location": {
     "DeliveringIn": "entregando em"
+  },
+  "SearchBar": {
+    "SearchPlaceholder": "busque pela loja ou culinária"
+  },
+  "RestaurantList": {
+    "NoResults": "nenhum resultado encontrado",
+    "Open": "abertos",
+    "Closed": "fechados"
   }
 }
