@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -57,13 +58,13 @@ export default function SignIn() {
             />
           </div>
 
-          <button
+          <Button
             onClick={handleSignIn}
             disabled={isLoading}
-            className="w-full bg-[var(--color-primary)] text-white py-2 px-4 rounded-md hover:bg-[var(--color-secondary)] transition-colors duration-200 disabled:opacity-70"
+            className="w-full py-2 px-4"
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
-          </button>
+          </Button>
         </div>
       </div>
     </main>
