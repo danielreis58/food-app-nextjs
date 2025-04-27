@@ -10,7 +10,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, className, id, fullWidth = true, ...props }, ref) => {
     const widthClass = fullWidth ? 'w-full' : '';
-    
+
     return (
       <div className={`${widthClass} ${className || ''}`}>
         {label && (
@@ -24,10 +24,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={`input-field ${error ? 'focus:ring-[var(--color-error)]' : ''}`}
           {...props}
         />
-        {error && <p className="mt-1 text-sm text-[var(--color-error)]">{error}</p>}
+        {error && (
+          <p className="mt-1 text-sm text-[var(--color-error)]">{error}</p>
+        )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = 'Input';

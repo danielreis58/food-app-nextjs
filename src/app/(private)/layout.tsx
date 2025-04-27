@@ -8,18 +8,18 @@ export default function PrivateLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
-  
-    const handleLogout = async () => {
-      setIsLoading(true);
-      // Simulating an API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Remove the fake token cookie
-      document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      router.push('/sign-in');
-    };
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    // Simulating an API call delay
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Remove the fake token cookie
+    document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    router.push('/sign-in');
+  };
 
   return (
     <div className="min-h-screen">
@@ -35,9 +35,7 @@ export default function PrivateLayout({
           </button>
         </div>
       </header>
-      <main className="max-w-7xl mx-auto p-4">
-        {children}
-      </main>
+      <main className="max-w-7xl mx-auto p-4">{children}</main>
     </div>
   );
 }

@@ -10,8 +10,8 @@ export default function SignIn() {
   const handleSignIn = async () => {
     setIsLoading(true);
     // Simulating an API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // Set a fake token cookie
     document.cookie = 'token=fake-jwt-token;path=/';
     router.push('/');
@@ -20,11 +20,16 @@ export default function SignIn() {
   return (
     <main className="min-h-screen bg-[var(--color-background)] flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">Welcome Back</h1>
-        
+        <h1 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">
+          Welcome Back
+        </h1>
+
         <div className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text)] mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-[var(--color-text)] mb-1"
+            >
               Email
             </label>
             <input
@@ -37,7 +42,10 @@ export default function SignIn() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-[var(--color-text)] mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-[var(--color-text)] mb-1"
+            >
               Password
             </label>
             <input

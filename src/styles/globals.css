@@ -1,0 +1,257 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+/** Dark Mode Variant **/
+@custom-variant dark (&:is(.dark *));
+
+/** Theme Colors **/
+:root {
+  /** Base Colors **/
+  --color-primary: #7b1fa2;
+  --color-background: #f8f8f8;
+  --color-text: #333333;
+  --color-secondary: #6a1b9a;
+  --color-background: #f8f8f8;
+  --color-text: #333333;
+
+  --background: #ffffff;
+  --foreground: #191919;
+  --card: #ffffff;
+  --card-foreground: #191919;
+  --popover: #ffffff;
+  --popover-foreground: #191919;
+
+  /** Contextual Colors **/
+  --muted: #f6f6f6;
+  --muted-darker: #f0f0f0;
+  --muted-foreground: #4c4c4c;
+  --accent: #f4f4f4;
+  --accent-darker: #ececec;
+  --accent-foreground: #3c3c3c;
+  --secondary: #f2f2f2;
+  --secondary-darker: #e9e9e9;
+  --secondary-foreground: #3d3d3d;
+  --primary: #b5a3f5;
+  --primary-darker: #9e7bf3;
+  --primary-foreground: #ffffff;
+  --mono: #3a1d1d;
+  --mono-darker: #000000;
+  --mono-foreground: #ffffff;
+  --destructive: #e50000;
+  --destructive-darker: #e60000;
+  --destructive-foreground: #ffffff;
+  --warning: #ff9c3b;
+  --warning-darker: #e6871f;
+  --warning-foreground: #ffffff;
+  --success: #65c72f;
+  --success-darker: #7ab731;
+  --success-foreground: #ffffff;
+  --info: #56a5ff;
+  --info-darker: #4689e1;
+  --info-foreground: #ffffff;
+
+  /** Base Styles **/
+  --border: #e4e4e4;
+  --input: #e0e0e0;
+  --ring: #d0d0d0;
+  --radius: 0.5rem;
+}
+
+.dark {
+  /** Base Colors **/
+  --color-primary: #7b1fa2;
+  --color-background: #2d2d2d;
+  --color-text: #e6e6e6;
+  --color-secondary: #6a1b9a;
+  --color-background: #2d2d2d;
+  --color-text: #e6e6e6;
+
+  --background: #2d2d2d;
+  --foreground: #e6e6e6;
+  --card: #2d2d2d;
+  --card-foreground: #e6e6e6;
+  --popover: #2d2d2d;
+  --popover-foreground: #e6e6e6;
+
+  /** Contextual Colors **/
+  --muted: #262626; /* 240 6% 9% */
+  --muted-darker: #1f1f1f; /* 240 6% 13% */
+  --muted-foreground: #999999; /* 240 6% 60% */
+  --accent: #1a1a1a; /* 240 6% 10% */
+  --accent-darker: #1f1f1f; /* 240 6% 14% */
+  --accent-foreground: #f7f7f7; /* 0 0% 98% */
+  --secondary: #1c1c1c; /* 240 6% 11% */
+  --secondary-darker: #1f1f1f; /* 240 6% 15% */
+  --secondary-foreground: #f7f7f7; /* 0 0% 98% */
+  --primary: #b5a3f5; /* 212 88% 51% */
+  --primary-darker: #9e7bf3; /* 212 88% 55% */
+  --primary-foreground: #ffffff; /* 0 0% 100% */
+  --mono: #e6e6e6; /* 0 0% 90% */
+  --mono-darker: #ffffff; /* 0 0% 100% */
+  --mono-foreground: #000000; /* 0 0% 0% */
+  --destructive: #e50000; /* 349 86% 50% */
+  --destructive-darker: #e60000; /* 349 86% 54% */
+  --destructive-foreground: #ffffff; /* 0 0% 100% */
+  --success: #65c72f; /* 137 89% 40% */
+  --success-darker: #649f25; /* 137 72% 44% */
+  --success-foreground: #ffffff; /* 0 0% 100% */
+  --warning: #ff9c3b; /* 47 100% 48% */
+  --warning-darker: #ff8f2a; /* 47 100% 52% */
+  --warning-foreground: #ffffff; /* 0 0% 100% */
+  --info: #56a5ff; /* 256 89% 52% */
+  --info-darker: #4689e1; /* 256 89% 56% */
+  --info-foreground: #ffffff; /* 0 0% 100% */
+
+  /** Base Styles **/
+  --border: #2a2a2a; /* 230 10% 14% */
+  --input: #2d2d2d; /* 230 10% 20% */
+  --ring: #4c4c4c; /* 230 10% 40% */
+}
+
+/** Theme Setup **/
+@theme inline {
+  /** Base Colors **/
+  --color-background: #ffffff;
+  --color-foreground: #191919;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #191919;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #191919;
+
+  /** Contextual Colors **/
+  --color-muted: #f6f6f6;
+  --color-muted-darker: #f0f0f0;
+  --color-muted-foreground: #4c4c4c;
+
+  --color-accent: #f4f4f4;
+  --color-accent-darker: #ececec;
+  --color-accent-foreground: #3c3c3c;
+
+  --color-primary: #b5a3f5;
+  --color-primary-darker: #9e7bf3;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #f2f2f2;
+  --color-secondary-darker: #e9e9e9;
+  --color-secondary-foreground: #3d3d3d;
+
+  --color-mono: #3a1d1d;
+  --color-mono-darker: #000000;
+  --color-mono-foreground: #ffffff;
+
+  --color-destructive: #e50000;
+  --color-destructive-darker: #e60000;
+  --color-destructive-foreground: #ffffff;
+
+  --color-success: #65c72f;
+  --color-success-darker: #7ab731;
+  --color-success-foreground: #ffffff;
+
+  --color-warning: #ff9c3b;
+  --color-warning-darker: #e6871f;
+  --color-warning-foreground: #ffffff;
+
+  --color-info: #56a5ff;
+  --color-info-darker: #4689e1;
+  --color-info-foreground: #ffffff;
+
+  /** Base Styles **/
+  --color-border: #e4e4e4;
+  --color-input: #e0e0e0;
+  --color-ring: #d0d0d0;
+
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes collapsible-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-collapsible-content-height);
+    }
+  }
+  @keyframes collapsible-up {
+    from {
+      height: var(--radix-collapsible-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+/** Global Styles **/
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  *:focus-visible {
+    @apply outline-ring rounded-xs shadow-none outline-2 outline-offset-3 transition-none!;
+  }
+}
+
+/** Custom Scrollbar **/
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  *:focus-visible {
+    @apply outline-ring rounded-xs shadow-none outline-2 outline-offset-3 transition-none!;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e4e4e4;
+    border-radius: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #e4e4e4 transparent;
+  }
+}
