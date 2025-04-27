@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '../ui/Button';
@@ -27,7 +27,7 @@ export default function UserButton() {
       disabled={isLoading}
       mode="icon"
     >
-      <User className="!size-6" />
+      <UserRound className="!size-6" />
     </Button>
   );
 }

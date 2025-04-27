@@ -1,17 +1,23 @@
+import Typography from '@/components/ui/Typography';
+import { ADDRESS } from '@/constants/mock';
 import { MapPin } from 'lucide-react';
-
-const ADDRESS = 'Rua Mandaguari, 198';
+import { useTranslations } from 'next-intl';
 
 export default function Location() {
+  const t = useTranslations('Location');
+
   return (
-    <div className="flex flex-1 items-center">
+    <div className="flex flex-1 items-center justify-center gap-3">
       <div>
-        <MapPin className="text-white" />
+        <MapPin className="size-4 text-white" />
       </div>
-      <div>
-        <div className="text-white">entregando em</div> {/**14 bold - 700 */}
-        <div className="text-2xl font-bold text-white">{ADDRESS}</div>
-        {/** 16 bold - 700 */}
+      <div className="flex flex-col items-start gap-1">
+        <Typography variant="14-bold-700" className="text-purple-200">
+          {t('DeliveringIn')}
+        </Typography>
+        <Typography variant="16-bold-700" className="text-white">
+          {ADDRESS}
+        </Typography>
       </div>
     </div>
   );

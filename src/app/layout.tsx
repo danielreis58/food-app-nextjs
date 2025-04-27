@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
 
 import '@/styles/globals.css';
+import { getLocale } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'Food app NextJS',
@@ -10,13 +11,15 @@ export const metadata: Metadata = {
 
 const nunito = Nunito({ subsets: ['latin'] });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={nunito.className}>{children}</body>
     </html>
   );
