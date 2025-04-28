@@ -9,5 +9,12 @@
     "NoResults": "no results found",
     "Open": "open",
     "Closed": "closed"
+  },
+  "Loading": {
+    "Loading": "loading..."
+  },
+  "NotFound": {
+    "NotFound": "not found",
+    "BackToHome": "back to home"
   }
 }

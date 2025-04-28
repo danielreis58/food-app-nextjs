@@ -9,5 +9,12 @@
     "NoResults": "nenhum resultado encontrado",
     "Open": "abertos",
     "Closed": "fechados"
+  },
+  "Loading": {
+    "Loading": "carregando..."
+  },
+  "NotFound": {
+    "NotFound": "não encontrado",
+    "BackToHome": "voltar para a página inicial"
   }
 }
