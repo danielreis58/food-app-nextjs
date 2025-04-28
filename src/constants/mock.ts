@@ -88,7 +88,8 @@ export const restaurants: Restaurant[] = [
     logo: '/restaurants/matsuri.png',
     rating: 4.5,
     delivery: {
-      type: 'free',
+      type: 'paid',
+      price: 4.99,
       freeDeliveryOver: 35.0,
       time: '30-40 min',
       distance: '5.2km',

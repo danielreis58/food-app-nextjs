@@ -1,4 +1,8 @@
 {
+  "Common": {
+    "Free": "grátis",
+    "Today": "hoje"
+  },
   "Location": {
     "DeliveringIn": "entregando em"
   },
@@ -16,5 +20,10 @@
   "NotFound": {
     "NotFound": "não encontrado",
     "BackToHome": "voltar para a página inicial"
+  },
+  "RestaurantHeader": {
+    "MinOrder": "pedido mínimo",
+    "FreeDelivery": "entrega grátis acima de",
+    "MoreInfo": "mais infos"
   }
 }
