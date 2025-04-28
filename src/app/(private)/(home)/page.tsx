@@ -2,7 +2,7 @@
 
 import PromoBanner from '@/components/restaurant/PromoBanner';
 import RestaurantList from '@/components/restaurant/RestaurantList';
-import SearchBar from '@/components/ui/SearchBar';
+import SearchBar from '@/components/SearchBar';
 import { restaurants } from '@/constants/mock';
 import { useState } from 'react';
 

@@ -1,4 +1,4 @@
-import Typography from '@/components/ui/Typography';
+import Typography from '@/components/Typography';
 import { ADDRESS } from '@/constants/mock';
 import { MapPin } from 'lucide-react';
 import { useTranslations } from 'next-intl';

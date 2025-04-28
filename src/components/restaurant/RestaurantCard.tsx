@@ -1,4 +1,4 @@
-import Typography from '@/components/ui/Typography';
+import Typography from '@/components/Typography';
 import { type Restaurant } from '@/constants/mock';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

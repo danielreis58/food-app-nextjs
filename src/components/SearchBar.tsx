@@ -3,7 +3,7 @@
 import { Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { Input } from './Input';
+import { Input } from './ui/Input';
 
 interface SearchBarProps {
   onSearch?: (query: string) => void;

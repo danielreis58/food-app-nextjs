@@ -1,6 +1,6 @@
 'use client';
 
-import Typography from '@/components/ui/Typography';
+import Typography from '@/components/Typography';
 import { Restaurant } from '@/constants/mock';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
