@@ -789,16 +789,16 @@ export const restaurants: Restaurant[] = [
             id: uuidv4(),
             name: 'Ceviche de Salmão',
             description: 'salmão temperado com limão, cebola e pimenta',
-            price: 19.9,
-            discountPrice: 0,
+            price: 22.9,
+            discountPrice: 19.9,
             tags: [],
             category: 'Ceviches',
             sizes: [
               {
                 id: uuidv4(),
                 name: 'médio',
-                price: 19.9,
-                discountPrice: 0,
+                price: 22.9,
+                discountPrice: 19.9,
                 isDefault: true,
               },
               {

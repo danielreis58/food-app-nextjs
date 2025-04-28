@@ -3,16 +3,25 @@
 import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
 import Typography from '@/components/Typography';
-import { restaurants, type Product } from '@/constants/mock';
+import { Restaurant, restaurants, type Product } from '@/constants/mock';
+import {
+  ChevronLeft,
+  CircleDollarSign,
+  CircleMinus,
+  CirclePlus,
+  Trash2,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Button } from '../../../../../../components/ui/Button';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
+
   const [product, setProduct] = useState<Product | null>(null);
-  const [restaurant, setRestaurant] = useState<any>(null);
+  const [restaurant, setRestaurant] = useState<Restaurant>();
   const [loading, setLoading] = useState(true);
 
   const [quantity, setQuantity] = useState(1);
@@ -66,13 +75,13 @@ export default function ProductDetailPage() {
 
   // Calculate current price based on selected options
   const calculateCurrentPrice = () => {
-    let basePrice = product.price;
+    let basePrice = product.discountPrice || product.price;
 
     // Add size price
     if (product.sizes && selectedSize) {
       const size = product.sizes.find((s) => s.id === selectedSize);
       if (size) {
-        basePrice = size.price;
+        basePrice = product.discountPrice || product.price;
       }
     }
 
@@ -126,21 +135,7 @@ export default function ProductDetailPage() {
       {/* Header with back button */}
       <div className="flex items-center p-4 border-b">
         <button onClick={() => router.back()} className="mr-2">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M15 18L9 12L15 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ChevronLeft className="size-5 text-neutral-800" />
         </button>
         <Typography variant="16-bold-700">{product.name}</Typography>
       </div>
@@ -153,7 +148,6 @@ export default function ProductDetailPage() {
             alt={product.name}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       )}
@@ -164,50 +158,90 @@ export default function ProductDetailPage() {
           <Typography variant="20-bold-700" className="mb-2">
             {product.name}
           </Typography>
-          <Typography variant="14-regular-400" className="text-neutral-600">
+
+          <div className="flex items-center gap-2 mb-2">
+            {product.sizes && (
+              <Typography variant="14-bold-800" className="text-neutral-500">
+                a partir de
+              </Typography>
+            )}
+            <Typography variant="18-extrabold-800" className="text-primary">
+              {`R$ ${(product.discountPrice || product.price).toFixed(2)}`}
+            </Typography>
+          </div>
+          <Typography variant="14-regular-400" className="text-neutral-500">
             {product.description}
-          </Typography>
-          <Typography variant="16-bold-700" className="text-primary mt-2">
-            {product.sizes
-              ? `a partir de R$ ${product.price.toFixed(2)}`
-              : `R$ ${product.price.toFixed(2)}`}
           </Typography>
         </div>
 
         {/* Quantity Selector */}
-        <div>
-          <Typography variant="14-bold-700" className="text-neutral-700 mb-2">
-            quantos?
-          </Typography>
+        <div className="flex items-center justify-between border-b pb-4">
+          <div className="flex flex-col gap-2">
+            <Typography variant="16-bold-700" className="text-neutral-700">
+              quantos?
+            </Typography>
+            <div className="flex items-center gap-1">
+              <Typography variant="14-semi-600" className="text-neutral-500">
+                total:
+              </Typography>
+              <Typography variant="14-bold-700" className="text-neutral-700">
+                R$ {calculateCurrentPrice().toFixed(2)}
+              </Typography>
+            </div>
+          </div>
           <div className="flex items-center">
-            <button
-              className="w-10 h-10 flex items-center justify-center rounded-full border border-neutral-200"
-              onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-            >
-              <span className="text-neutral-500 text-xl">-</span>
-            </button>
-            <Typography variant="16-bold-700" className="mx-4">
-              {quantity}
-            </Typography>
-            <button
-              className="w-10 h-10 flex items-center justify-center rounded-full border border-neutral-200 text-primary"
-              onClick={() => setQuantity(quantity + 1)}
-            >
-              <span className="text-xl">+</span>
-            </button>
-            <Typography variant="16-bold-700" className="ml-4 text-primary">
-              total: R$ {calculateCurrentPrice().toFixed(2)}
-            </Typography>
+            {quantity === 0 ? (
+              <Button
+                className="text-white bg-neutral-500 rounded-lg hover:bg-neutral-700"
+                onClick={() => setQuantity(1)}
+              >
+                adicionar
+              </Button>
+            ) : (
+              <div className="flex items-center">
+                <button
+                  className="items-center justify-center text-teal-400 hover:text-teal-600 cursor-pointer"
+                  onClick={() => quantity > 0 && setQuantity(quantity - 1)}
+                >
+                  {quantity === 1 ? (
+                    <Trash2 className="size-7" strokeWidth={1.5} />
+                  ) : (
+                    <CircleMinus className="size-8" strokeWidth={1} />
+                  )}
+                </button>
+                <Typography variant="16-bold-700" className="mx-4">
+                  {quantity}
+                </Typography>
+                <button
+                  className="items-center justify-center text-teal-400 hover:text-teal-600 cursor-pointer"
+                  onClick={() => setQuantity(quantity + 1)}
+                >
+                  <CirclePlus className="size-8" strokeWidth={1} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Sizes */}
         {product.sizes && product.sizes.length > 0 && (
-          <div>
-            <Typography variant="14-bold-700" className="text-neutral-700 mb-2">
-              qual o tamanho?
-            </Typography>
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <Typography variant="14-bold-700" className="text-neutral-700">
+                  qual o tamanho?
+                </Typography>
+                <Typography variant="12-bold-700" className="text-neutral-500">
+                  escolha 1
+                </Typography>
+              </div>
+              <div className="p-2 bg-neutral-700 rounded text-center">
+                <Typography variant="12-bold-700" className="text-white">
+                  obrigatório
+                </Typography>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
               {product.sizes.map((size) => (
                 <div
                   key={size.id}
@@ -226,35 +260,65 @@ export default function ProductDetailPage() {
                     htmlFor={size.id}
                     className="flex-1 flex justify-between cursor-pointer"
                   >
-                    <Typography
-                      variant="14-regular-400"
-                      className="text-neutral-700"
-                    >
-                      {size.name}
-                    </Typography>
-                    <Typography variant="14-bold-700" className="text-primary">
-                      {size.isDefault
-                        ? `de R$ ${(size.price + 3).toFixed(2)} por R$ ${size.price.toFixed(2)}`
-                        : `R$ ${size.price.toFixed(2)}`}
-                    </Typography>
+                    <div className="flex items-center gap-1">
+                      {!!size.discountPrice && (
+                        <CircleDollarSign className="size-4 text-green-500" />
+                      )}
+                      <Typography
+                        variant="14-regular-400"
+                        className="text-neutral-500"
+                      >
+                        {size.name}
+                      </Typography>
+                    </div>
+                    {size.discountPrice ? (
+                      <div className="flex items-center gap-1">
+                        <Typography
+                          variant="12-bold-700"
+                          className="text-neutral-500"
+                        >
+                          de R$ {size.price.toFixed(2)} por
+                        </Typography>
+                        <Typography
+                          variant="14-bold-700"
+                          className="text-green-600"
+                        >
+                          R$ {size.discountPrice.toFixed(2)}
+                        </Typography>
+                      </div>
+                    ) : (
+                      <Typography
+                        variant="14-bold-700"
+                        className="text-primary"
+                      >
+                        R$ ${size.price.toFixed(2)}
+                      </Typography>
+                    )}
                   </label>
                 </div>
               ))}
-            </div>
-            <div className="mt-2 px-2 py-1 bg-neutral-100 rounded text-center">
-              <Typography variant="12-bold-700" className="text-neutral-500">
-                obrigatório
-              </Typography>
             </div>
           </div>
         )}
 
         {/* Addons */}
         {product.addons && product.addons.length > 0 && (
-          <div>
-            <Typography variant="14-bold-700" className="text-neutral-700 mb-2">
-              acompanhamentos
-            </Typography>
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <Typography variant="14-bold-700" className="text-neutral-700">
+                  acompanhamentos
+                </Typography>
+                <Typography variant="12-bold-700" className="text-neutral-500">
+                  escolha de 1 a 2
+                </Typography>
+              </div>
+              <div className="p-2 bg-neutral-700 rounded text-center">
+                <Typography variant="12-bold-700" className="text-white">
+                  obrigatório
+                </Typography>
+              </div>
+            </div>
             <div className="flex flex-col gap-2">
               {product.addons.map((addon) => (
                 <div
@@ -291,21 +355,23 @@ export default function ProductDetailPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-2 px-2 py-1 bg-neutral-100 rounded text-center">
-              <Typography variant="12-bold-700" className="text-neutral-500">
-                obrigatório escolha de 1 a {product.addons.length}
-              </Typography>
-            </div>
           </div>
         )}
 
         {/* Cutlery */}
         {product.cutlery && product.cutlery.length > 0 && (
-          <div>
-            <Typography variant="14-bold-700" className="text-neutral-700 mb-2">
-              precisa de talher?
-            </Typography>
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <Typography variant="14-bold-700" className="text-neutral-700">
+                  precisa de talher?
+                </Typography>
+                <Typography variant="12-bold-700" className="text-neutral-500">
+                  escolha 1
+                </Typography>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
               {product.cutlery.map((cutlery) => (
                 <div
                   key={cutlery.id}
@@ -342,21 +408,23 @@ export default function ProductDetailPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-2 px-2 py-1 bg-neutral-100 rounded text-center">
-              <Typography variant="12-bold-700" className="text-neutral-500">
-                escolha até 1
-              </Typography>
-            </div>
           </div>
         )}
 
         {/* Extras */}
         {product.extras && product.extras.length > 0 && (
-          <div>
-            <Typography variant="14-bold-700" className="text-neutral-700 mb-2">
-              mais alguma coisa?
-            </Typography>
-            <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <Typography variant="14-bold-700" className="text-neutral-700">
+                  mais alguma coisa?
+                </Typography>
+                <Typography variant="12-bold-700" className="text-neutral-500">
+                  escolha até 2
+                </Typography>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
               {product.extras.map((extra) => (
                 <div
                   key={extra.id}
@@ -387,22 +455,24 @@ export default function ProductDetailPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-2 px-2 py-1 bg-neutral-100 rounded text-center">
-              <Typography variant="12-bold-700" className="text-neutral-500">
-                escolha até 2
-              </Typography>
-            </div>
           </div>
         )}
 
         {/* Notes */}
-        <div>
-          <Typography variant="14-bold-700" className="text-neutral-700 mb-2">
-            alguma observação do item? • opcional
-          </Typography>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-1">
+              <Typography variant="14-bold-700" className="text-neutral-700">
+                alguma observação?
+              </Typography>
+              <Typography variant="12-bold-700" className="text-neutral-500">
+                opcional
+              </Typography>
+            </div>
+          </div>
           <textarea
             className="w-full border border-neutral-200 rounded p-2 text-sm"
-            placeholder="ex: tirar algum ingrediente, ponto do prato"
+            placeholder="alguma observação do item? • opcional ex: tirar algum ingrediente, ponto do prato"
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -411,12 +481,12 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Add to cart button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
+      <div className="p-4 bg-white border-t">
         <button
           className="w-full bg-primary text-white py-3 rounded-md font-bold"
           onClick={handleAddToCart}
         >
-          adicionar
+          ver ticket
         </button>
       </div>
     </div>
