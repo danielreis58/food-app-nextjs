@@ -1,4 +1,5 @@
 export const ADDRESS = 'Rua Mandaguari, 198';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Restaurant {
   id: string;
@@ -16,7 +17,7 @@ export interface Restaurant {
 
 export const restaurants: Restaurant[] = [
   {
-    id: '1',
+    id: uuidv4(),
     name: 'Matsuri Concept',
     logo: '/restaurants/matsuri.png',
     rating: 4.7,
@@ -28,7 +29,7 @@ export const restaurants: Restaurant[] = [
     isOpen: true,
   },
   {
-    id: '2',
+    id: uuidv4(),
     name: 'Subway - Avenida center',
     logo: '/restaurants/subway.png',
     rating: 4.7,
@@ -41,7 +42,7 @@ export const restaurants: Restaurant[] = [
     isOpen: true,
   },
   {
-    id: '3',
+    id: uuidv4(),
     name: 'Burger King - Colombo',
     logo: '/restaurants/burgerking.png',
     rating: 4.7,
@@ -54,7 +55,7 @@ export const restaurants: Restaurant[] = [
     isOpen: true,
   },
   {
-    id: '4',
+    id: uuidv4(),
     name: "McDonald's - Novo Centro",
     logo: '/restaurants/mcdonalds.png',
     rating: 4.7,
@@ -66,7 +67,7 @@ export const restaurants: Restaurant[] = [
     isOpen: true,
   },
   {
-    id: '5',
+    id: uuidv4(),
     name: 'Matsuri Concept',
     logo: '/restaurants/matsuri.png',
     rating: 4.7,
@@ -78,7 +79,7 @@ export const restaurants: Restaurant[] = [
     isOpen: false,
   },
   {
-    id: '6',
+    id: uuidv4(),
     name: 'Subway - Avenida center',
     logo: '/restaurants/subway.png',
     rating: 4.7,
@@ -91,7 +92,7 @@ export const restaurants: Restaurant[] = [
     isOpen: false,
   },
   {
-    id: '7',
+    id: uuidv4(),
     name: 'Burger King - Colombo',
     logo: '/restaurants/burgerking.png',
     rating: 4.7,
@@ -104,7 +105,7 @@ export const restaurants: Restaurant[] = [
     isOpen: false,
   },
   {
-    id: '8',
+    id: uuidv4(),
     name: "McDonald's - Novo Centro",
     logo: '/restaurants/mcdonalds.png',
     rating: 4.7,
