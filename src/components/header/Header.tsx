@@ -4,7 +4,7 @@ import UserButton from './UserButton';
 
 export default function Header() {
   return (
-    <header className="shadow p-4 bg-primary h-18">
+    <header className="sticky top-0 z-50 p-4 bg-primary h-18">
       <div className="flex justify-between items-center gap-6 bg-primary">
         <HomeButton />
         <Location />

@@ -15,7 +15,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col">
-      <div className="p-4 bg-primary">
+      <div className="sticky top-18 z-50 p-4 bg-primary">
         <SearchBar onSearch={handleSearch} />
       </div>
 
