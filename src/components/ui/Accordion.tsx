@@ -148,13 +148,13 @@ function AccordionTrigger(
         {children}
         {indicator === 'plus' && (
           <Plus
-            className="size-4 shrink-0 transition-transform opacity-80 duration-200"
+            className="size-6 shrink-0 transition-transform opacity-80 duration-200"
             strokeWidth={1}
           />
         )}
         {indicator === 'arrow' && (
           <ChevronDown
-            className="size-4 shrink-0 transition-transform opacity-80 duration-200"
+            className="size-6 shrink-0 transition-transform opacity-80 duration-200"
             strokeWidth={1}
           />
         )}

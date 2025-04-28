@@ -1,11 +1,12 @@
 export const ADDRESS = 'Rua Mandaguari, 198';
 import { v4 as uuidv4 } from 'uuid';
 
-// Interfaces para as opções dos produtos
+export type ProductTag = 'spicy' | 'vegetarian';
 export interface ProductSize {
   id: string;
   name: string;
   price: number;
+  discountPrice: number;
   isDefault?: boolean;
 }
 
@@ -13,6 +14,7 @@ export interface ProductAddon {
   id: string;
   name: string;
   price: number;
+  discountPrice: number;
   available: boolean;
 }
 
@@ -20,6 +22,7 @@ export interface ProductOption {
   id: string;
   name: string;
   price: number;
+  discountPrice: 0;
   available: boolean;
 }
 
@@ -27,6 +30,7 @@ export interface ProductCutlery {
   id: string;
   name: string;
   price: number;
+  discountPrice: 0;
   available: boolean;
 }
 
@@ -34,6 +38,8 @@ export interface ProductExtra {
   id: string;
   name: string;
   price: number;
+  discountPrice: number;
+  tags: ProductTag[];
   available: boolean;
 }
 
@@ -43,6 +49,8 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  discountPrice: number;
+  tags: ProductTag[];
   category: string;
   image?: string;
   sizes?: ProductSize[];
@@ -109,6 +117,8 @@ export const restaurants: Restaurant[] = [
             name: 'Niguiri Tradicional',
             description: 'Arroz com peixe fresco por cima',
             price: 10.99,
+            discountPrice: 0,
+            tags: [],
             category: 'Niguiris',
           },
           {
@@ -116,6 +126,8 @@ export const restaurants: Restaurant[] = [
             name: 'Niguiri Especial',
             description: 'Arroz com salmão maçaricado e molho especial',
             price: 12.99,
+            discountPrice: 0,
+            tags: [],
             category: 'Niguiris',
           },
         ],
@@ -130,20 +142,24 @@ export const restaurants: Restaurant[] = [
             id: uuidv4(),
             name: 'Ceviche de Salmão',
             description: 'salmão temperado com limão, cebola e pimenta',
-            price: 19.9,
+            price: 22.9,
+            discountPrice: 19.9,
+            tags: [],
             category: 'Ceviches',
             image: '/products/ceviche-salmon.png',
             sizes: [
               {
                 id: uuidv4(),
                 name: 'médio',
-                price: 19.9,
+                price: 22.9,
+                discountPrice: 19.9,
                 isDefault: true,
               },
               {
                 id: uuidv4(),
                 name: 'grande',
                 price: 28.9,
+                discountPrice: 0,
               },
             ],
             addons: [
@@ -151,24 +167,28 @@ export const restaurants: Restaurant[] = [
                 id: uuidv4(),
                 name: 'shoyu',
                 price: 0,
+                discountPrice: 0,
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'gengibre',
                 price: 0,
+                discountPrice: 0,
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'wasabi',
                 price: 0,
+                discountPrice: 0,
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'sem acompanhamentos',
                 price: 0,
+                discountPrice: 0,
                 available: true,
               },
             ],
@@ -177,12 +197,14 @@ export const restaurants: Restaurant[] = [
                 id: uuidv4(),
                 name: 'hashi',
                 price: 0,
+                discountPrice: 0,
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'garfo e faca descartável',
                 price: 1.0,
+                discountPrice: 0,
                 available: true,
               },
             ],
@@ -191,18 +213,24 @@ export const restaurants: Restaurant[] = [
                 id: uuidv4(),
                 name: 'biscoito da sorte',
                 price: 2.0,
+                discountPrice: 0,
+                tags: [],
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'rolinho primavera',
                 price: 8.0,
+                discountPrice: 0,
+                tags: [],
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'guioza',
                 price: 6.0,
+                discountPrice: 0,
+                tags: [],
                 available: true,
               },
             ],
@@ -213,6 +241,8 @@ export const restaurants: Restaurant[] = [
             description:
               'peixe branco marinado em suco de limão com pimenta e cebola roxa',
             price: 17.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Ceviches',
           },
         ],
@@ -226,7 +256,9 @@ export const restaurants: Restaurant[] = [
             id: uuidv4(),
             name: 'Califórnia',
             description: 'Kani, pepino e maçã ou manga',
-            price: 13.99,
+            price: 17.0,
+            discountPrice: 13.99,
+            tags: ['vegetarian'],
             category: 'Temakis',
           },
           {
@@ -234,6 +266,8 @@ export const restaurants: Restaurant[] = [
             name: 'Filadélfia',
             description: 'Arroz, salmão fresco, cream cheese e cebolinha',
             price: 13.99,
+            discountPrice: 0,
+            tags: [],
             category: 'Temakis',
           },
           {
@@ -242,14 +276,48 @@ export const restaurants: Restaurant[] = [
             description:
               'Escolha 3 ingredientes: shimeji, alface americana, rúcula, pepino, tomate seco, cream cheese, maionese, cebolinha',
             price: 13.99,
+            discountPrice: 0,
+            tags: ['spicy'],
             category: 'Temakis',
+            sizes: [
+              {
+                id: uuidv4(),
+                name: 'pequeno',
+                price: 13.99,
+                discountPrice: 0,
+                isDefault: true,
+              },
+              {
+                id: uuidv4(),
+                name: 'grande',
+                price: 19.99,
+                discountPrice: 0,
+              },
+            ],
           },
           {
             id: uuidv4(),
             name: 'Salmão picante',
             description: 'Alga, arroz, salmão fresco, pimenta e cebolinha',
             price: 13.99,
+            discountPrice: 0,
+            tags: ['spicy'],
             category: 'Temakis',
+            sizes: [
+              {
+                id: uuidv4(),
+                name: 'pequeno',
+                price: 13.99,
+                discountPrice: 0,
+                isDefault: true,
+              },
+              {
+                id: uuidv4(),
+                name: 'grande',
+                price: 19.99,
+                discountPrice: 0,
+              },
+            ],
           },
         ],
       },
@@ -262,6 +330,8 @@ export const restaurants: Restaurant[] = [
             name: 'Coca-cola',
             description: 'Lata 350ml',
             price: 5.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -269,6 +339,8 @@ export const restaurants: Restaurant[] = [
             name: 'Fanta laranja',
             description: 'Lata 350ml',
             price: 5.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -276,6 +348,8 @@ export const restaurants: Restaurant[] = [
             name: 'Guaraná antarctica',
             description: 'Lata 350ml',
             price: 5.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -283,6 +357,8 @@ export const restaurants: Restaurant[] = [
             name: 'Suco Prats laranja',
             description: 'Garrafa 450ml',
             price: 6.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -290,6 +366,8 @@ export const restaurants: Restaurant[] = [
             name: 'Água sem gás',
             description: 'Garrafa 500ml',
             price: 3.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
         ],
@@ -303,6 +381,8 @@ export const restaurants: Restaurant[] = [
             name: 'Sorvete de chá verde',
             description: 'Porção individual 120g',
             price: 8.99,
+            discountPrice: 0,
+            tags: [],
             category: 'Sobremesas',
           },
           {
@@ -310,6 +390,8 @@ export const restaurants: Restaurant[] = [
             name: 'Mochi de chocolate',
             description: '2 unidades',
             price: 10.5,
+            discountPrice: 0,
+            tags: [],
             category: 'Sobremesas',
           },
         ],
@@ -342,18 +424,22 @@ export const restaurants: Restaurant[] = [
             description:
               'Frango grelhado com molho teriyaki, vegetais e queijo',
             price: 18.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sanduíches',
             sizes: [
               {
                 id: uuidv4(),
                 name: '15cm',
                 price: 18.9,
+                discountPrice: 0,
                 isDefault: true,
               },
               {
                 id: uuidv4(),
                 name: '30cm',
                 price: 32.9,
+                discountPrice: 0,
               },
             ],
             addons: [
@@ -361,12 +447,14 @@ export const restaurants: Restaurant[] = [
                 id: uuidv4(),
                 name: 'Queijo extra',
                 price: 2.0,
+                discountPrice: 0,
                 available: true,
               },
               {
                 id: uuidv4(),
                 name: 'Bacon',
                 price: 3.0,
+                discountPrice: 0,
                 available: true,
               },
             ],
@@ -376,18 +464,22 @@ export const restaurants: Restaurant[] = [
             name: 'Italiano BMT',
             description: 'Peperoni, salame, presunto, vegetais e queijo',
             price: 19.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sanduíches',
             sizes: [
               {
                 id: uuidv4(),
                 name: '15cm',
                 price: 19.9,
+                discountPrice: 0,
                 isDefault: true,
               },
               {
                 id: uuidv4(),
                 name: '30cm',
                 price: 33.9,
+                discountPrice: 0,
               },
             ],
           },
@@ -402,6 +494,8 @@ export const restaurants: Restaurant[] = [
             name: 'Refrigerante',
             description: 'Copo 500ml',
             price: 6.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -409,6 +503,8 @@ export const restaurants: Restaurant[] = [
             name: 'Suco natural',
             description: 'Copo 300ml',
             price: 7.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
         ],
@@ -441,6 +537,8 @@ export const restaurants: Restaurant[] = [
             description:
               'Hambúrguer grelhado no fogo com queijo, tomate, alface, cebola, picles, ketchup e maionese',
             price: 21.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Lanches',
           },
           {
@@ -449,6 +547,8 @@ export const restaurants: Restaurant[] = [
             description:
               'Dois hambúrgueres grelhados no fogo com queijo, tomate, alface, cebola, picles, ketchup e maionese',
             price: 28.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Lanches',
           },
           {
@@ -456,6 +556,8 @@ export const restaurants: Restaurant[] = [
             name: 'Chicken Jr',
             description: 'Frango empanado com alface e maionese',
             price: 9.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Lanches',
           },
         ],
@@ -469,6 +571,8 @@ export const restaurants: Restaurant[] = [
             name: 'Refrigerante',
             description: 'Copo 500ml',
             price: 7.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -476,6 +580,8 @@ export const restaurants: Restaurant[] = [
             name: 'Milk Shake',
             description: 'Copo 400ml',
             price: 10.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
         ],
@@ -489,6 +595,8 @@ export const restaurants: Restaurant[] = [
             name: 'Sundae',
             description: 'Sorvete com calda',
             price: 7.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sobremesas',
           },
           {
@@ -496,6 +604,8 @@ export const restaurants: Restaurant[] = [
             name: 'Torta de maçã',
             description: 'Torta quentinha de maçã',
             price: 6.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sobremesas',
           },
         ],
@@ -528,6 +638,8 @@ export const restaurants: Restaurant[] = [
             description:
               'Dois hambúrgueres, alface, queijo, molho especial, cebola e picles em pão com gergelim',
             price: 24.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sanduíches',
           },
           {
@@ -536,6 +648,8 @@ export const restaurants: Restaurant[] = [
             description:
               'Hambúrguer com queijo, picles, cebola, ketchup e mostarda',
             price: 21.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sanduíches',
           },
           {
@@ -543,6 +657,8 @@ export const restaurants: Restaurant[] = [
             name: 'McChicken',
             description: 'Frango empanado com maionese e alface',
             price: 19.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sanduíches',
           },
         ],
@@ -556,6 +672,8 @@ export const restaurants: Restaurant[] = [
             name: 'Big Mac + Batata Média + Bebida Média',
             description: 'Combo com Big Mac, batata média e bebida média',
             price: 33.9,
+            discountPrice: 0,
+            tags: [],
             category: 'McOferta',
           },
           {
@@ -563,6 +681,8 @@ export const restaurants: Restaurant[] = [
             name: 'Quarterão + Batata Média + Bebida Média',
             description: 'Combo com Quarterão, batata média e bebida média',
             price: 31.9,
+            discountPrice: 0,
+            tags: [],
             category: 'McOferta',
           },
         ],
@@ -576,6 +696,8 @@ export const restaurants: Restaurant[] = [
             name: 'Coca-Cola',
             description: 'Copo 500ml',
             price: 7.5,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
           {
@@ -583,6 +705,8 @@ export const restaurants: Restaurant[] = [
             name: 'Suco de Laranja',
             description: 'Copo 300ml',
             price: 8.0,
+            discountPrice: 0,
+            tags: [],
             category: 'Bebidas',
           },
         ],
@@ -597,6 +721,8 @@ export const restaurants: Restaurant[] = [
             description:
               'Sorvete de baunilha com cobertura e pedaços de Ovomaltine',
             price: 12.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sobremesas',
           },
           {
@@ -604,6 +730,8 @@ export const restaurants: Restaurant[] = [
             name: 'Casquinha',
             description: 'Sorvete no cone',
             price: 4.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Sobremesas',
           },
         ],
@@ -636,6 +764,8 @@ export const restaurants: Restaurant[] = [
             name: 'Niguiri Tradicional',
             description: 'Arroz com peixe fresco por cima',
             price: 10.99,
+            discountPrice: 0,
+            tags: [],
             category: 'Niguiris',
           },
           {
@@ -643,6 +773,8 @@ export const restaurants: Restaurant[] = [
             name: 'Niguiri Especial',
             description: 'Arroz com salmão maçaricado e molho especial',
             price: 12.99,
+            discountPrice: 0,
+            tags: [],
             category: 'Niguiris',
           },
         ],
@@ -658,18 +790,22 @@ export const restaurants: Restaurant[] = [
             name: 'Ceviche de Salmão',
             description: 'salmão temperado com limão, cebola e pimenta',
             price: 19.9,
+            discountPrice: 0,
+            tags: [],
             category: 'Ceviches',
             sizes: [
               {
                 id: uuidv4(),
                 name: 'médio',
                 price: 19.9,
+                discountPrice: 0,
                 isDefault: true,
               },
               {
                 id: uuidv4(),
                 name: 'grande',
                 price: 28.9,
+                discountPrice: 0,
               },
             ],
           },
@@ -685,6 +821,8 @@ export const restaurants: Restaurant[] = [
             name: 'Califórnia',
             description: 'Kani, pepino e maçã ou manga',
             price: 13.99,
+            discountPrice: 13.99,
+            tags: [],
             category: 'Temakis',
           },
         ],
