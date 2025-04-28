@@ -131,7 +131,7 @@ export const restaurants: Restaurant[] = [
             description: 'salmão temperado com limão, cebola e pimenta',
             price: 19.9,
             category: 'Ceviches',
-            image: '/restaurants/ceviche-salmon.jpg',
+            image: '/products/ceviche-salmon.png',
             sizes: [
               {
                 id: uuidv4(),

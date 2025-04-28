@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 type TypographyVariant =
   | '16-bold-700'
+  | '12-bold-700'
   | '14-bold-700'
   | '20-bold-700'
   | '20-bold-800'
@@ -36,6 +37,7 @@ export const Typography = ({
   children,
 }: TypographyProps) => {
   const variants: Record<TypographyProps['variant'], string> = {
+    '12-bold-700': 'text-[12px] font-bold leading-[100%]',
     '16-bold-700': 'text-[16px] font-bold leading-[100%]',
     '14-bold-700': 'text-[14px] font-bold leading-[19px]',
     '20-bold-700': 'text-[20px] font-bold leading-[100%]',

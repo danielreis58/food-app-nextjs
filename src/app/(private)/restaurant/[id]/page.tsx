@@ -102,7 +102,7 @@ export default function RestaurantDetailsPage() {
           <div key={category.id} className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <Typography variant="18-bold-700" className="text-neutral-800">
+                <Typography variant="16-bold-700" className="text-neutral-800">
                   {category.name}
                 </Typography>
                 {category.description && (
