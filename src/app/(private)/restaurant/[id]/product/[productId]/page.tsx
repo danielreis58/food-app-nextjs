@@ -367,7 +367,7 @@ export default function ProductDetailPage() {
                   precisa de talher?
                 </Typography>
                 <Typography variant="12-bold-700" className="text-neutral-500">
-                  escolha 1
+                  escolha até 1
                 </Typography>
               </div>
             </div>
