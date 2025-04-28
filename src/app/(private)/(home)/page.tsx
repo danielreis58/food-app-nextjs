@@ -1,7 +1,7 @@
 'use client';
 
-import PromoBanner from '@/components/restaurant/PromoBanner';
-import RestaurantList from '@/components/restaurant/RestaurantList';
+import PromoBanner from '@/components/home/PromoBanner';
+import RestaurantList from '@/components/home/RestaurantList';
 import SearchBar from '@/components/SearchBar';
 import { restaurants } from '@/constants/mock';
 import { useState } from 'react';
