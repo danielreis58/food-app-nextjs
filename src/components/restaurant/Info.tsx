@@ -7,32 +7,13 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { cn } from '../../lib/utils';
 
-export default function RestaurantHeader({
-  restaurant,
-}: {
-  restaurant: Restaurant;
-}) {
+export default function Info({ restaurant }: { restaurant: Restaurant }) {
   const t = useTranslations();
 
   return (
-    <div className="flex flex-col gap-2 px-4 py-6">
-      {/* Logo and name */}
-      <div className="flex items-center gap-2">
-        <div className="w-9 h-9 relative rounded-md overflow-hidden">
-          <Image
-            src={restaurant.logo}
-            alt={restaurant.name}
-            fill
-            className="object-cover"
-            sizes="64px"
-          />
-        </div>
-        <Typography variant="20-extrabold-800" className="text-neutral-900">
-          {restaurant.name}
-        </Typography>
-      </div>
+    <div className="flex flex-col px-4 py-6">
       {/* Description */}
-      <div className="flex flex-col gap-2 items-baseline">
+      <div className="flex flex-col gap-3 items-baseline">
         {/* Share, favorite, more info*/}
         <div className="flex items-center gap-1 justify-between w-full">
           <div className="flex items-center gap-6">
@@ -41,9 +22,7 @@ export default function RestaurantHeader({
           </div>
 
           <div className="flex items-center gap-1 text-teal-600">
-            <Typography variant="12-bold-700">
-              {t('RestaurantHeader.MoreInfo')}
-            </Typography>
+            <Typography variant="12-bold-700">{t('Info.MoreInfo')}</Typography>
             <ChevronRight className="size-3" />
           </div>
         </div>
@@ -136,8 +115,7 @@ export default function RestaurantHeader({
 
         {/* Minimum order */}
         <Typography variant="12-bold-700" className="text-neutral-500">
-          {t('RestaurantHeader.MinOrder')}: R${' '}
-          {restaurant.minimumOrder.toFixed(2)}
+          {t('Info.MinOrder')}: R$ {restaurant.minimumOrder.toFixed(2)}
         </Typography>
       </div>
     </div>

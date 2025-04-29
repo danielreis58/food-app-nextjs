@@ -3,6 +3,7 @@
 import Typography from '@/components/Typography';
 import { type Product } from '@/constants/mock';
 import { CircleDollarSign } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 interface ProductCardProps {
@@ -10,6 +11,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const t = useTranslations();
   return (
     <div className="bg-white p-4 cursor-pointer">
       <div className="grid grid-cols-5 gap-2 items-center">
@@ -56,9 +58,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
         <div className="flex flex-col items-end gap-1 col-span-2">
-          {product.sizes && (
+          {product.sizeOptions?.items && (
             <Typography variant="12-bold-700" className="text-neutral-500">
-              a partir de
+              {t('Common.From')}
             </Typography>
           )}
           {product.discountPrice ? (

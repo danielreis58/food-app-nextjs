@@ -6,22 +6,16 @@ import Addons from '@/components/product/Addons';
 import CoverImage from '@/components/product/CoverImage';
 import Cutlery from '@/components/product/Cutlery';
 import Extras from '@/components/product/Extras';
-import Footer from '@/components/product/Footer';
 import Header from '@/components/product/Header';
 import Info from '@/components/product/Info';
 import Notes from '@/components/product/Notes';
 import Quantity from '@/components/product/Quantity';
 import Sizes from '@/components/product/Sizes';
 import { Restaurant, restaurants, type Product } from '@/constants/mock';
-import {
-  defaultValues,
-  productFormSchema,
-  type ProductFormValues,
-} from '@/validators/products';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { type ProductFormValues } from '@/validators/products';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -31,10 +25,7 @@ export default function ProductDetailPage() {
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [loading, setLoading] = useState(true);
 
-  const methods = useForm<ProductFormValues>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues,
-  });
+  const methods = useFormContext<ProductFormValues>();
 
   const { setValue, handleSubmit } = methods;
 
@@ -93,33 +84,26 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col bg-white min-h-screen"
-      >
-        <Header product={product} />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Header product={product} />
 
-        <CoverImage product={product} />
+      <CoverImage product={product} />
 
-        <div className="p-4 flex flex-col gap-4">
-          <Info product={product} />
+      <div className="p-4 flex flex-col gap-4">
+        <Info product={product} />
 
-          <Quantity product={product} />
+        <Quantity product={product} />
 
-          <Sizes product={product} />
+        <Sizes product={product} />
 
-          <Addons product={product} />
+        <Addons product={product} />
 
-          <Cutlery product={product} />
+        <Cutlery product={product} />
 
-          <Extras product={product} />
+        <Extras product={product} />
 
-          <Notes />
-        </div>
-
-        <Footer />
-      </form>
-    </FormProvider>
+        <Notes />
+      </div>
+    </form>
   );
 }

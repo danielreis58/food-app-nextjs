@@ -2,8 +2,9 @@
 
 import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
+import Header from '@/components/restaurant/Header';
+import Info from '@/components/restaurant/Info';
 import ProductAccordion from '@/components/restaurant/ProductAccordion';
-import RestaurantHeader from '@/components/restaurant/RestaurantHeader';
 import { restaurants, type Restaurant } from '@/constants/mock';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -34,7 +35,8 @@ export default function RestaurantDetailsPage() {
 
   return (
     <div className="flex flex-col w-full">
-      <RestaurantHeader restaurant={restaurant} />
+      <Header restaurant={restaurant} />
+      <Info restaurant={restaurant} />
 
       <div className="flex flex-col gap-1 bg-neutral-100">
         {restaurant.productCategories.map((category) => (

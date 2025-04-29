@@ -2,13 +2,17 @@
 
 import Typography from '@/components/Typography';
 import { type Product } from '@/constants/mock';
+import { useTranslations } from 'next-intl';
 
 type InfoProps = {
   product: Product;
 };
 
 export default function Info({ product }: InfoProps) {
+  const t = useTranslations();
+
   const { sizeOptions } = product;
+
   return (
     <div>
       <Typography variant="20-bold-700" className="mb-2">
@@ -18,7 +22,7 @@ export default function Info({ product }: InfoProps) {
       <div className="flex items-center gap-2 mb-2">
         {sizeOptions?.items && (
           <Typography variant="14-bold-800" className="text-neutral-500">
-            a partir de
+            {t('Common.From')}
           </Typography>
         )}
         <Typography variant="18-extrabold-800" className="text-primary">

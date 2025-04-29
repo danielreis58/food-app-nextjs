@@ -1,6 +1,11 @@
 {
   "Common": {
-    "Free": "free"
+    "Free": "free",
+    "Today": "today",
+    "Add": "add",
+    "Optional": "optional",
+    "From": "from",
+    "Required": "required"
   },
   "Location": {
     "DeliveringIn": "delivering in"
@@ -18,11 +23,23 @@
   },
   "NotFound": {
     "NotFound": "not found",
-    "BackToHome": "back to home"
+    "BackToHome": "back to home page"
   },
-  "RestaurantHeader": {
+  "Info": {
     "MinOrder": "minimum order",
     "FreeDelivery": "free delivery over",
     "MoreInfo": "more info"
+  },
+  "ProductFooter": {
+    "MadeWithLoveInMaringa": "made with 💜 in Maringá-PR",
+    "SeeTicket": "see ticket"
+  },
+  "Quantity": {
+    "HowMany": "how many?",
+    "Total": "total"
+  },
+  "Note": {
+    "SomeNote": "any notes?",
+    "NotePlaceholder": "any item notes? • optional e.g. remove ingredient, doneness of dish"
   }
 }

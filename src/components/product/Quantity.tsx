@@ -4,6 +4,7 @@ import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/Button';
 import { type Product } from '@/constants/mock';
 import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
 
 type QuantityProps = {
@@ -11,6 +12,8 @@ type QuantityProps = {
 };
 
 export default function Quantity({ product }: QuantityProps) {
+  const t = useTranslations();
+
   const methods = useFormContext();
 
   const { watch, setValue } = methods;
@@ -71,11 +74,11 @@ export default function Quantity({ product }: QuantityProps) {
     <div className="flex items-center justify-between border-b pb-4">
       <div className="flex flex-col gap-2">
         <Typography variant="16-bold-700" className="text-neutral-700">
-          quantos?
+          {t('Quantity.HowMany')}
         </Typography>
         <div className="flex items-center gap-1">
           <Typography variant="14-semi-600" className="text-neutral-500">
-            total:
+            {t('Quantity.Total')}:
           </Typography>
           <Typography variant="14-bold-700" className="text-neutral-700">
             R$ {calculateCurrentPrice().toFixed(2)}
@@ -89,7 +92,7 @@ export default function Quantity({ product }: QuantityProps) {
             onClick={incrementQuantity}
             type="button"
           >
-            adicionar
+            {t('Common.Add')}
           </Button>
         ) : (
           <div className="flex items-center">

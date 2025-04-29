@@ -1,6 +1,7 @@
 'use client';
 
 import Typography from '@/components/Typography';
+import { useTranslations } from 'next-intl';
 
 type OptionHeaderProps = {
   title: string;
@@ -13,6 +14,8 @@ export default function OptionHeader({
   subtitle,
   required,
 }: OptionHeaderProps) {
+  const t = useTranslations();
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-col gap-1">
@@ -28,7 +31,7 @@ export default function OptionHeader({
       {required && (
         <div className="p-2 bg-neutral-700 rounded text-center">
           <Typography variant="12-bold-700" className="text-white">
-            obrigatório
+            {t('Common.Required')}
           </Typography>
         </div>
       )}

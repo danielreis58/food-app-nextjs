@@ -1,7 +1,11 @@
 {
   "Common": {
     "Free": "grátis",
-    "Today": "hoje"
+    "Today": "hoje",
+    "Add": "adicionar",
+    "Optional": "opcional",
+    "From": "a partir de",
+    "Required": "obrigatório"
   },
   "Location": {
     "DeliveringIn": "entregando em"
@@ -21,9 +25,21 @@
     "NotFound": "não encontrado",
     "BackToHome": "voltar para a página inicial"
   },
-  "RestaurantHeader": {
+  "Info": {
     "MinOrder": "pedido mínimo",
     "FreeDelivery": "entrega grátis acima de",
     "MoreInfo": "mais infos"
+  },
+  "ProductFooter": {
+    "MadeWithLoveInMaringa": "feito com 💜 em maringá-PR",
+    "SeeTicket": "ver ticket"
+  },
+  "Quantity": {
+    "HowMany": "quantos?",
+    "Total": "total"
+  },
+  "Note": {
+    "SomeNote": "alguma observação?",
+    "NotePlaceholder": "alguma observação do item? • opcional ex: tirar algum ingrediente, ponto do prato"
   }
 }
