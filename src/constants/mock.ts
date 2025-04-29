@@ -16,6 +16,7 @@ export interface ProductAddon {
   price: number;
   discountPrice: number;
   available: boolean;
+  isDefault?: boolean;
 }
 
 export interface ProductOption {
@@ -24,6 +25,7 @@ export interface ProductOption {
   price: number;
   discountPrice: 0;
   available: boolean;
+  isDefault?: boolean;
 }
 
 export interface ProductCutlery {
@@ -32,6 +34,7 @@ export interface ProductCutlery {
   price: number;
   discountPrice: 0;
   available: boolean;
+  isDefault?: boolean;
 }
 
 export interface ProductExtra {
@@ -41,6 +44,20 @@ export interface ProductExtra {
   discountPrice: number;
   tags: ProductTag[];
   available: boolean;
+  isDefault?: boolean;
+}
+
+export interface ProductOptionGroup {
+  title: string;
+  minSelect: number;
+  maxSelect: number;
+  required: boolean;
+  items:
+    | ProductSize[]
+    | ProductAddon[]
+    | ProductOption[]
+    | ProductCutlery[]
+    | ProductExtra[];
 }
 
 // Interface para produtos
@@ -53,11 +70,10 @@ export interface Product {
   tags: ProductTag[];
   category: string;
   image?: string;
-  sizes?: ProductSize[];
-  addons?: ProductAddon[];
-  options?: ProductOption[];
-  cutlery?: ProductCutlery[];
-  extras?: ProductExtra[];
+  sizeOptions?: ProductOptionGroup;
+  addonOptions?: ProductOptionGroup;
+  cutleryOptions?: ProductOptionGroup;
+  extraOptions?: ProductOptionGroup;
 }
 
 // Interface para categorias de produtos no restaurante
@@ -147,93 +163,117 @@ export const restaurants: Restaurant[] = [
             tags: [],
             category: 'Ceviches',
             image: '/products/ceviche-salmon.png',
-            sizes: [
-              {
-                id: uuidv4(),
-                name: 'médio',
-                price: 22.9,
-                discountPrice: 19.9,
-                isDefault: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'grande',
-                price: 28.9,
-                discountPrice: 0,
-              },
-            ],
-            addons: [
-              {
-                id: uuidv4(),
-                name: 'shoyu',
-                price: 0,
-                discountPrice: 0,
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'gengibre',
-                price: 0,
-                discountPrice: 0,
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'wasabi',
-                price: 0,
-                discountPrice: 0,
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'sem acompanhamentos',
-                price: 0,
-                discountPrice: 0,
-                available: true,
-              },
-            ],
-            cutlery: [
-              {
-                id: uuidv4(),
-                name: 'hashi',
-                price: 0,
-                discountPrice: 0,
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'garfo e faca descartável',
-                price: 1.0,
-                discountPrice: 0,
-                available: true,
-              },
-            ],
-            extras: [
-              {
-                id: uuidv4(),
-                name: 'biscoito da sorte',
-                price: 2.0,
-                discountPrice: 0,
-                tags: [],
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'rolinho primavera',
-                price: 8.0,
-                discountPrice: 0,
-                tags: [],
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'guioza',
-                price: 6.0,
-                discountPrice: 0,
-                tags: [],
-                available: true,
-              },
-            ],
+            sizeOptions: {
+              title: 'qual o tamanho?',
+              minSelect: 1,
+              maxSelect: 1,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'médio',
+                  price: 22.9,
+                  discountPrice: 19.9,
+                  isDefault: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'grande',
+                  price: 28.9,
+                  discountPrice: 0,
+                },
+              ],
+            },
+            addonOptions: {
+              title: 'acompanhamentos',
+              minSelect: 1,
+              maxSelect: 2,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'shoyu',
+                  price: 0,
+                  discountPrice: 0,
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'gengibre',
+                  price: 0,
+                  discountPrice: 0,
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'wasabi',
+                  price: 0,
+                  discountPrice: 0,
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'sem acompanhamentos',
+                  price: 0,
+                  discountPrice: 0,
+                  available: true,
+                },
+              ],
+            },
+            cutleryOptions: {
+              title: 'precisa de talher?',
+              minSelect: 0,
+              maxSelect: 1,
+              required: false,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'hashi',
+                  price: 0,
+                  discountPrice: 0,
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'garfo e faca descartável',
+                  price: 1.0,
+                  discountPrice: 0,
+                  available: true,
+                },
+              ],
+            },
+            extraOptions: {
+              title: 'mais alguma coisa?',
+              minSelect: 0,
+              maxSelect: 2,
+              required: false,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'biscoito da sorte',
+                  price: 2.0,
+                  discountPrice: 0,
+                  tags: [],
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'rolinho primavera',
+                  price: 8.0,
+                  discountPrice: 0,
+                  tags: [],
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'guioza',
+                  price: 6.0,
+                  discountPrice: 0,
+                  tags: [],
+                  available: true,
+                },
+              ],
+            },
           },
           {
             id: uuidv4(),
@@ -279,21 +319,27 @@ export const restaurants: Restaurant[] = [
             discountPrice: 0,
             tags: ['spicy'],
             category: 'Temakis',
-            sizes: [
-              {
-                id: uuidv4(),
-                name: 'pequeno',
-                price: 13.99,
-                discountPrice: 0,
-                isDefault: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'grande',
-                price: 19.99,
-                discountPrice: 0,
-              },
-            ],
+            sizeOptions: {
+              title: 'qual o tamanho?',
+              minSelect: 1,
+              maxSelect: 1,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'pequeno',
+                  price: 13.99,
+                  discountPrice: 0,
+                  isDefault: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'grande',
+                  price: 19.99,
+                  discountPrice: 0,
+                },
+              ],
+            },
           },
           {
             id: uuidv4(),
@@ -303,21 +349,27 @@ export const restaurants: Restaurant[] = [
             discountPrice: 0,
             tags: ['spicy'],
             category: 'Temakis',
-            sizes: [
-              {
-                id: uuidv4(),
-                name: 'pequeno',
-                price: 13.99,
-                discountPrice: 0,
-                isDefault: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'grande',
-                price: 19.99,
-                discountPrice: 0,
-              },
-            ],
+            sizeOptions: {
+              title: 'qual o tamanho?',
+              minSelect: 1,
+              maxSelect: 1,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'pequeno',
+                  price: 13.99,
+                  discountPrice: 0,
+                  isDefault: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'grande',
+                  price: 19.99,
+                  discountPrice: 0,
+                },
+              ],
+            },
           },
         ],
       },
@@ -427,37 +479,49 @@ export const restaurants: Restaurant[] = [
             discountPrice: 0,
             tags: [],
             category: 'Sanduíches',
-            sizes: [
-              {
-                id: uuidv4(),
-                name: '15cm',
-                price: 18.9,
-                discountPrice: 0,
-                isDefault: true,
-              },
-              {
-                id: uuidv4(),
-                name: '30cm',
-                price: 32.9,
-                discountPrice: 0,
-              },
-            ],
-            addons: [
-              {
-                id: uuidv4(),
-                name: 'Queijo extra',
-                price: 2.0,
-                discountPrice: 0,
-                available: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'Bacon',
-                price: 3.0,
-                discountPrice: 0,
-                available: true,
-              },
-            ],
+            sizeOptions: {
+              title: 'qual o tamanho?',
+              minSelect: 1,
+              maxSelect: 1,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: '15cm',
+                  price: 18.9,
+                  discountPrice: 0,
+                  isDefault: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: '30cm',
+                  price: 32.9,
+                  discountPrice: 0,
+                },
+              ],
+            },
+            addonOptions: {
+              title: 'acompanhamentos',
+              minSelect: 1,
+              maxSelect: 2,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'Queijo extra',
+                  price: 2.0,
+                  discountPrice: 0,
+                  available: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'Bacon',
+                  price: 3.0,
+                  discountPrice: 0,
+                  available: true,
+                },
+              ],
+            },
           },
           {
             id: uuidv4(),
@@ -467,21 +531,27 @@ export const restaurants: Restaurant[] = [
             discountPrice: 0,
             tags: [],
             category: 'Sanduíches',
-            sizes: [
-              {
-                id: uuidv4(),
-                name: '15cm',
-                price: 19.9,
-                discountPrice: 0,
-                isDefault: true,
-              },
-              {
-                id: uuidv4(),
-                name: '30cm',
-                price: 33.9,
-                discountPrice: 0,
-              },
-            ],
+            sizeOptions: {
+              title: 'qual o tamanho?',
+              minSelect: 1,
+              maxSelect: 1,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: '15cm',
+                  price: 19.9,
+                  discountPrice: 0,
+                  isDefault: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: '30cm',
+                  price: 33.9,
+                  discountPrice: 0,
+                },
+              ],
+            },
           },
         ],
       },
@@ -793,21 +863,27 @@ export const restaurants: Restaurant[] = [
             discountPrice: 19.9,
             tags: [],
             category: 'Ceviches',
-            sizes: [
-              {
-                id: uuidv4(),
-                name: 'médio',
-                price: 22.9,
-                discountPrice: 19.9,
-                isDefault: true,
-              },
-              {
-                id: uuidv4(),
-                name: 'grande',
-                price: 28.9,
-                discountPrice: 0,
-              },
-            ],
+            sizeOptions: {
+              title: 'qual o tamanho?',
+              minSelect: 1,
+              maxSelect: 1,
+              required: true,
+              items: [
+                {
+                  id: uuidv4(),
+                  name: 'médio',
+                  price: 22.9,
+                  discountPrice: 19.9,
+                  isDefault: true,
+                },
+                {
+                  id: uuidv4(),
+                  name: 'grande',
+                  price: 28.9,
+                  discountPrice: 0,
+                },
+              ],
+            },
           },
         ],
       },

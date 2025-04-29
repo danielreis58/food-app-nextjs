@@ -16,6 +16,162 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '../../../../../../components/ui/Button';
 
+import { Checkbox } from '@/components/ui/Checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup';
+
+type OptionHeaderProps = {
+  title: string;
+  subtitle?: string;
+  required?: boolean;
+};
+
+const OptionHeader: React.FC<OptionHeaderProps> = ({
+  title,
+  subtitle,
+  required,
+}) => {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-1">
+        <Typography variant="14-bold-700" className="text-neutral-700">
+          {title}
+        </Typography>
+        {subtitle && (
+          <Typography variant="12-bold-700" className="text-neutral-500">
+            {subtitle}
+          </Typography>
+        )}
+      </div>
+      {required && (
+        <div className="p-2 bg-neutral-700 rounded text-center">
+          <Typography variant="12-bold-700" className="text-white">
+            obrigatório
+          </Typography>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Reusable radio option component
+type RadioOptionProps = {
+  id: string;
+  name: string;
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  price?: number;
+  discountPrice?: number;
+  showDiscount?: boolean;
+};
+
+const RadioOption: React.FC<RadioOptionProps> = ({
+  id,
+  name,
+  checked,
+  onChange,
+  label,
+  price = 0,
+  discountPrice = 0,
+  showDiscount = false,
+}) => {
+  return (
+    <div className="flex items-center" onClick={onChange}>
+      <RadioGroup
+        className="w-full"
+        value={checked ? id : ''}
+        onValueChange={() => onChange()}
+      >
+        <div className="flex items-center gap-3">
+          <RadioGroupItem value={id} id={id} />
+          <label
+            htmlFor={id}
+            className="flex-1 flex justify-between cursor-pointer w-full"
+          >
+            <div className="flex items-center gap-1">
+              {showDiscount && discountPrice > 0 && (
+                <CircleDollarSign className="size-4 text-green-500" />
+              )}
+              <Typography variant="14-regular-400" className="text-neutral-500">
+                {label}
+              </Typography>
+            </div>
+            {discountPrice > 0 ? (
+              <div className="flex items-center gap-1">
+                <Typography variant="12-bold-700" className="text-neutral-500">
+                  de R$ {price.toFixed(2)} por
+                </Typography>
+                <Typography variant="14-bold-700" className="text-green-600">
+                  R$ {discountPrice.toFixed(2)}
+                </Typography>
+              </div>
+            ) : price > 0 ? (
+              <Typography variant="14-bold-700" className="text-primary">
+                {name !== 'size' ? '+ ' : ''}R$ {price.toFixed(2)}
+              </Typography>
+            ) : null}
+          </label>
+        </div>
+      </RadioGroup>
+    </div>
+  );
+};
+
+// Reusable checkbox option component
+type CheckboxOptionProps = {
+  id: string;
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  price?: number;
+};
+
+const CheckboxOption: React.FC<CheckboxOptionProps> = ({
+  id,
+  checked,
+  onChange,
+  label,
+  price = 0,
+}) => {
+  return (
+    <div className="flex items-center" onClick={onChange}>
+      <div className="flex items-center gap-3 w-full">
+        <Checkbox
+          id={id}
+          checked={checked}
+          onCheckedChange={() => onChange()}
+        />
+        <label
+          htmlFor={id}
+          className="flex-1 flex justify-between cursor-pointer"
+        >
+          <Typography variant="14-regular-400" className="text-neutral-500">
+            {label}
+          </Typography>
+          {price > 0 && (
+            <Typography variant="14-bold-700" className="text-primary">
+              +R$ {price.toFixed(2)}
+            </Typography>
+          )}
+        </label>
+      </div>
+    </div>
+  );
+};
+
+// Helper function to generate selection text
+const getSelectionText = (
+  min: number,
+  max: number,
+  isRequired: boolean,
+): string => {
+  if (!isRequired) return 'opcional';
+  if (min === max && min === 1) return 'escolha 1';
+  if (min === 1 && max > 1) return `escolha de ${min} a ${max}`;
+  if (min === 0 && max === 1) return 'escolha até 1';
+  return `escolha até ${max}`;
+};
+
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -24,7 +180,7 @@ export default function ProductDetailPage() {
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [loading, setLoading] = useState(true);
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [selectedCutlery, setSelectedCutlery] = useState<string>('');
@@ -55,9 +211,16 @@ export default function ProductDetailPage() {
         setProduct(foundProduct);
 
         // Set default size if available
-        if (foundProduct.sizes && foundProduct.sizes.length > 0) {
-          const defaultSize = foundProduct.sizes.find((s) => s.isDefault);
-          setSelectedSize(defaultSize?.id || foundProduct.sizes[0].id);
+        if (
+          foundProduct.sizeOptions?.items &&
+          foundProduct.sizeOptions?.items.length > 0
+        ) {
+          const defaultSize = foundProduct.sizeOptions?.items.find(
+            (s) => s.isDefault,
+          );
+          setSelectedSize(
+            defaultSize?.id || foundProduct.sizeOptions?.items[0].id,
+          );
         }
       }
     }
@@ -73,22 +236,24 @@ export default function ProductDetailPage() {
     return <NotFound />;
   }
 
+  const { sizeOptions, addonOptions, cutleryOptions, extraOptions } = product;
+
   // Calculate current price based on selected options
   const calculateCurrentPrice = () => {
     let basePrice = product.discountPrice || product.price;
 
     // Add size price
-    if (product.sizes && selectedSize) {
-      const size = product.sizes.find((s) => s.id === selectedSize);
+    if (sizeOptions?.items && selectedSize) {
+      const size = sizeOptions?.items.find((s) => s.id === selectedSize);
       if (size) {
         basePrice = product.discountPrice || product.price;
       }
     }
 
     // Add extras price
-    if (product.extras && selectedExtras.length > 0) {
+    if (extraOptions?.items && selectedExtras.length > 0) {
       for (const extraId of selectedExtras) {
-        const extra = product.extras.find((e) => e.id === extraId);
+        const extra = extraOptions?.items.find((e) => e.id === extraId);
         if (extra) {
           basePrice += extra.price;
         }
@@ -96,8 +261,10 @@ export default function ProductDetailPage() {
     }
 
     // Add cutlery price
-    if (product.cutlery && selectedCutlery) {
-      const cutlery = product.cutlery.find((c) => c.id === selectedCutlery);
+    if (cutleryOptions?.items && selectedCutlery) {
+      const cutlery = cutleryOptions?.items.find(
+        (c) => c.id === selectedCutlery,
+      );
       if (cutlery) {
         basePrice += cutlery.price;
       }
@@ -160,7 +327,7 @@ export default function ProductDetailPage() {
           </Typography>
 
           <div className="flex items-center gap-2 mb-2">
-            {product.sizes && (
+            {sizeOptions?.items && (
               <Typography variant="14-bold-800" className="text-neutral-500">
                 a partir de
               </Typography>
@@ -224,235 +391,112 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Sizes */}
-        {product.sizes && product.sizes.length > 0 && (
+        {sizeOptions && sizeOptions.items.length > 0 && (
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <Typography variant="14-bold-700" className="text-neutral-700">
-                  qual o tamanho?
-                </Typography>
-                <Typography variant="12-bold-700" className="text-neutral-500">
-                  escolha 1
-                </Typography>
-              </div>
-              <div className="p-2 bg-neutral-700 rounded text-center">
-                <Typography variant="12-bold-700" className="text-white">
-                  obrigatório
-                </Typography>
-              </div>
-            </div>
+            <OptionHeader
+              title={sizeOptions.title}
+              subtitle={getSelectionText(
+                sizeOptions.minSelect,
+                sizeOptions.maxSelect,
+                sizeOptions.required,
+              )}
+              required={sizeOptions.required}
+            />
             <div className="flex flex-col gap-4">
-              {product.sizes.map((size) => (
-                <div
+              {sizeOptions.items.map((size) => (
+                <RadioOption
                   key={size.id}
-                  className="flex items-center"
-                  onClick={() => setSelectedSize(size.id)}
-                >
-                  <input
-                    type="radio"
-                    id={size.id}
-                    name="size"
-                    checked={selectedSize === size.id}
-                    onChange={() => {}}
-                    className="mr-2 accent-primary"
-                  />
-                  <label
-                    htmlFor={size.id}
-                    className="flex-1 flex justify-between cursor-pointer"
-                  >
-                    <div className="flex items-center gap-1">
-                      {!!size.discountPrice && (
-                        <CircleDollarSign className="size-4 text-green-500" />
-                      )}
-                      <Typography
-                        variant="14-regular-400"
-                        className="text-neutral-500"
-                      >
-                        {size.name}
-                      </Typography>
-                    </div>
-                    {size.discountPrice ? (
-                      <div className="flex items-center gap-1">
-                        <Typography
-                          variant="12-bold-700"
-                          className="text-neutral-500"
-                        >
-                          de R$ {size.price.toFixed(2)} por
-                        </Typography>
-                        <Typography
-                          variant="14-bold-700"
-                          className="text-green-600"
-                        >
-                          R$ {size.discountPrice.toFixed(2)}
-                        </Typography>
-                      </div>
-                    ) : (
-                      <Typography
-                        variant="14-bold-700"
-                        className="text-primary"
-                      >
-                        R$ ${size.price.toFixed(2)}
-                      </Typography>
-                    )}
-                  </label>
-                </div>
+                  id={size.id}
+                  name="size"
+                  checked={selectedSize === size.id}
+                  onChange={() => setSelectedSize(size.id)}
+                  label={size.name}
+                  price={size.price}
+                  discountPrice={size.discountPrice}
+                  showDiscount={true}
+                />
               ))}
             </div>
           </div>
         )}
 
         {/* Addons */}
-        {product.addons && product.addons.length > 0 && (
+        {addonOptions && addonOptions.items.length > 0 && (
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <Typography variant="14-bold-700" className="text-neutral-700">
-                  acompanhamentos
-                </Typography>
-                <Typography variant="12-bold-700" className="text-neutral-500">
-                  escolha de 1 a 2
-                </Typography>
-              </div>
-              <div className="p-2 bg-neutral-700 rounded text-center">
-                <Typography variant="12-bold-700" className="text-white">
-                  obrigatório
-                </Typography>
-              </div>
-            </div>
+            <OptionHeader
+              title={addonOptions.title}
+              subtitle={getSelectionText(
+                addonOptions.minSelect,
+                addonOptions.maxSelect,
+                addonOptions.required,
+              )}
+              required={addonOptions.required}
+            />
             <div className="flex flex-col gap-2">
-              {product.addons.map((addon) => (
-                <div
+              {addonOptions.items.map((addon) => (
+                <CheckboxOption
                   key={addon.id}
-                  className="flex items-center"
-                  onClick={() => handleToggleAddon(addon.id)}
-                >
-                  <input
-                    type="checkbox"
-                    id={addon.id}
-                    checked={selectedAddons.includes(addon.id)}
-                    onChange={() => {}}
-                    className="mr-2 accent-primary"
-                  />
-                  <label
-                    htmlFor={addon.id}
-                    className="flex-1 flex justify-between cursor-pointer"
-                  >
-                    <Typography
-                      variant="14-regular-400"
-                      className="text-neutral-700"
-                    >
-                      {addon.name}
-                    </Typography>
-                    {addon.price > 0 && (
-                      <Typography
-                        variant="14-bold-700"
-                        className="text-primary"
-                      >
-                        +R$ {addon.price.toFixed(2)}
-                      </Typography>
-                    )}
-                  </label>
-                </div>
+                  id={addon.id}
+                  checked={selectedAddons.includes(addon.id)}
+                  onChange={() => handleToggleAddon(addon.id)}
+                  label={addon.name}
+                  price={addon.price}
+                />
               ))}
             </div>
           </div>
         )}
 
         {/* Cutlery */}
-        {product.cutlery && product.cutlery.length > 0 && (
+        {cutleryOptions && cutleryOptions.items.length > 0 && (
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <Typography variant="14-bold-700" className="text-neutral-700">
-                  precisa de talher?
-                </Typography>
-                <Typography variant="12-bold-700" className="text-neutral-500">
-                  escolha até 1
-                </Typography>
-              </div>
-            </div>
+            <OptionHeader
+              title={cutleryOptions.title}
+              subtitle={getSelectionText(
+                cutleryOptions.minSelect,
+                cutleryOptions.maxSelect,
+                cutleryOptions.required,
+              )}
+              required={cutleryOptions.required}
+            />
             <div className="flex flex-col gap-4">
-              {product.cutlery.map((cutlery) => (
-                <div
+              {cutleryOptions.items.map((cutlery) => (
+                <RadioOption
                   key={cutlery.id}
-                  className="flex items-center"
-                  onClick={() => setSelectedCutlery(cutlery.id)}
-                >
-                  <input
-                    type="radio"
-                    id={cutlery.id}
-                    name="cutlery"
-                    checked={selectedCutlery === cutlery.id}
-                    onChange={() => {}}
-                    className="mr-2 accent-primary"
-                  />
-                  <label
-                    htmlFor={cutlery.id}
-                    className="flex-1 flex justify-between cursor-pointer"
-                  >
-                    <Typography
-                      variant="14-regular-400"
-                      className="text-neutral-700"
-                    >
-                      {cutlery.name}
-                    </Typography>
-                    {cutlery.price > 0 && (
-                      <Typography
-                        variant="14-bold-700"
-                        className="text-primary"
-                      >
-                        +R$ {cutlery.price.toFixed(2)}
-                      </Typography>
-                    )}
-                  </label>
-                </div>
+                  id={cutlery.id}
+                  name="cutlery"
+                  checked={selectedCutlery === cutlery.id}
+                  onChange={() => setSelectedCutlery(cutlery.id)}
+                  label={cutlery.name}
+                  price={cutlery.price}
+                />
               ))}
             </div>
           </div>
         )}
 
         {/* Extras */}
-        {product.extras && product.extras.length > 0 && (
+        {extraOptions && extraOptions.items.length > 0 && (
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col gap-1">
-                <Typography variant="14-bold-700" className="text-neutral-700">
-                  mais alguma coisa?
-                </Typography>
-                <Typography variant="12-bold-700" className="text-neutral-500">
-                  escolha até 2
-                </Typography>
-              </div>
-            </div>
+            <OptionHeader
+              title={extraOptions.title}
+              subtitle={getSelectionText(
+                extraOptions.minSelect,
+                extraOptions.maxSelect,
+                extraOptions.required,
+              )}
+              required={extraOptions.required}
+            />
             <div className="flex flex-col gap-4">
-              {product.extras.map((extra) => (
-                <div
+              {extraOptions.items.map((extra) => (
+                <CheckboxOption
                   key={extra.id}
-                  className="flex items-center"
-                  onClick={() => handleToggleExtra(extra.id)}
-                >
-                  <input
-                    type="checkbox"
-                    id={extra.id}
-                    checked={selectedExtras.includes(extra.id)}
-                    onChange={() => {}}
-                    className="mr-2 accent-primary"
-                  />
-                  <label
-                    htmlFor={extra.id}
-                    className="flex-1 flex justify-between cursor-pointer"
-                  >
-                    <Typography
-                      variant="14-regular-400"
-                      className="text-neutral-700"
-                    >
-                      {extra.name}
-                    </Typography>
-                    <Typography variant="14-bold-700" className="text-primary">
-                      +R$ {extra.price.toFixed(2)}
-                    </Typography>
-                  </label>
-                </div>
+                  id={extra.id}
+                  checked={selectedExtras.includes(extra.id)}
+                  onChange={() => handleToggleExtra(extra.id)}
+                  label={extra.name}
+                  price={extra.price}
+                />
               ))}
             </div>
           </div>
@@ -481,14 +525,16 @@ export default function ProductDetailPage() {
       </div>
 
       {/* Add to cart button */}
-      <div className="p-4 bg-white border-t">
-        <button
-          className="w-full bg-primary text-white py-3 rounded-md font-bold"
-          onClick={handleAddToCart}
-        >
-          ver ticket
-        </button>
-      </div>
+      {quantity > 0 && (
+        <div className="sticky bottom-0 z-50  p-4 bg-white border-t">
+          <button
+            className="w-full bg-primary text-white py-3 rounded-md font-bold"
+            onClick={handleAddToCart}
+          >
+            ver ticket
+          </button>
+        </div>
+      )}
     </div>
   );
 }
