@@ -2,162 +2,18 @@
 
 import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
+import CheckboxOption from '@/components/product/CheckboxOption';
+import CoverImage from '@/components/product/CoverImage';
+import Header from '@/components/product/Header';
+import Info from '@/components/product/Info';
+import OptionHeader from '@/components/product/OptionHeader';
+import RadioOption from '@/components/product/RadioOption';
 import Typography from '@/components/Typography';
+import { Button } from '@/components/ui/Button';
 import { Restaurant, restaurants, type Product } from '@/constants/mock';
-import {
-  ChevronLeft,
-  CircleDollarSign,
-  CircleMinus,
-  CirclePlus,
-  Trash2,
-} from 'lucide-react';
-import Image from 'next/image';
+import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Button } from '../../../../../../components/ui/Button';
-
-import { Checkbox } from '@/components/ui/Checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup';
-
-type OptionHeaderProps = {
-  title: string;
-  subtitle?: string;
-  required?: boolean;
-};
-
-const OptionHeader: React.FC<OptionHeaderProps> = ({
-  title,
-  subtitle,
-  required,
-}) => {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-col gap-1">
-        <Typography variant="14-bold-700" className="text-neutral-700">
-          {title}
-        </Typography>
-        {subtitle && (
-          <Typography variant="12-bold-700" className="text-neutral-500">
-            {subtitle}
-          </Typography>
-        )}
-      </div>
-      {required && (
-        <div className="p-2 bg-neutral-700 rounded text-center">
-          <Typography variant="12-bold-700" className="text-white">
-            obrigatório
-          </Typography>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Reusable radio option component
-type RadioOptionProps = {
-  id: string;
-  name: string;
-  checked: boolean;
-  onChange: () => void;
-  label: string;
-  price?: number;
-  discountPrice?: number;
-  showDiscount?: boolean;
-};
-
-const RadioOption: React.FC<RadioOptionProps> = ({
-  id,
-  name,
-  checked,
-  onChange,
-  label,
-  price = 0,
-  discountPrice = 0,
-  showDiscount = false,
-}) => {
-  return (
-    <div className="flex items-center" onClick={onChange}>
-      <RadioGroup
-        className="w-full"
-        value={checked ? id : ''}
-        onValueChange={() => onChange()}
-      >
-        <div className="flex items-center gap-3">
-          <RadioGroupItem value={id} id={id} />
-          <label
-            htmlFor={id}
-            className="flex-1 flex justify-between cursor-pointer w-full"
-          >
-            <div className="flex items-center gap-1">
-              {showDiscount && discountPrice > 0 && (
-                <CircleDollarSign className="size-4 text-green-500" />
-              )}
-              <Typography variant="14-regular-400" className="text-neutral-500">
-                {label}
-              </Typography>
-            </div>
-            {discountPrice > 0 ? (
-              <div className="flex items-center gap-1">
-                <Typography variant="12-bold-700" className="text-neutral-500">
-                  de R$ {price.toFixed(2)} por
-                </Typography>
-                <Typography variant="14-bold-700" className="text-green-600">
-                  R$ {discountPrice.toFixed(2)}
-                </Typography>
-              </div>
-            ) : price > 0 ? (
-              <Typography variant="14-bold-700" className="text-primary">
-                {name !== 'size' ? '+ ' : ''}R$ {price.toFixed(2)}
-              </Typography>
-            ) : null}
-          </label>
-        </div>
-      </RadioGroup>
-    </div>
-  );
-};
-
-// Reusable checkbox option component
-type CheckboxOptionProps = {
-  id: string;
-  checked: boolean;
-  onChange: () => void;
-  label: string;
-  price?: number;
-};
-
-const CheckboxOption: React.FC<CheckboxOptionProps> = ({
-  id,
-  checked,
-  onChange,
-  label,
-  price = 0,
-}) => {
-  return (
-    <div className="flex items-center" onClick={onChange}>
-      <div className="flex items-center gap-3 w-full">
-        <Checkbox
-          id={id}
-          checked={checked}
-          onCheckedChange={() => onChange()}
-        />
-        <label
-          htmlFor={id}
-          className="flex-1 flex justify-between cursor-pointer"
-        >
-          <Typography variant="14-regular-400" className="text-neutral-500">
-            {label}
-          </Typography>
-          {price > 0 && (
-            <Typography variant="14-bold-700" className="text-primary">
-              +R$ {price.toFixed(2)}
-            </Typography>
-          )}
-        </label>
-      </div>
-    </div>
-  );
-};
 
 // Helper function to generate selection text
 const getSelectionText = (
@@ -299,47 +155,12 @@ export default function ProductDetailPage() {
 
   return (
     <div className="flex flex-col bg-white min-h-screen">
-      {/* Header with back button */}
-      <div className="flex items-center p-4 border-b">
-        <button onClick={() => router.back()} className="mr-2">
-          <ChevronLeft className="size-5 text-neutral-800" />
-        </button>
-        <Typography variant="16-bold-700">{product.name}</Typography>
-      </div>
+      <Header product={product} />
 
-      {/* Product Image */}
-      {product.image && (
-        <div className="w-full h-48 relative">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="object-cover"
-          />
-        </div>
-      )}
+      <CoverImage product={product} />
 
       <div className="p-4 flex flex-col gap-4">
-        {/* Product Info */}
-        <div>
-          <Typography variant="20-bold-700" className="mb-2">
-            {product.name}
-          </Typography>
-
-          <div className="flex items-center gap-2 mb-2">
-            {sizeOptions?.items && (
-              <Typography variant="14-bold-800" className="text-neutral-500">
-                a partir de
-              </Typography>
-            )}
-            <Typography variant="18-extrabold-800" className="text-primary">
-              {`R$ ${(product.discountPrice || product.price).toFixed(2)}`}
-            </Typography>
-          </div>
-          <Typography variant="14-regular-400" className="text-neutral-500">
-            {product.description}
-          </Typography>
-        </div>
+        <Info product={product} />
 
         {/* Quantity Selector */}
         <div className="flex items-center justify-between border-b pb-4">
