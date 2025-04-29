@@ -4,18 +4,23 @@ import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/Button';
 import { type Product } from '@/constants/mock';
 import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 type QuantityProps = {
   product: Product;
 };
-export default function ProductHeader({ product }: QuantityProps) {
-  const [quantity, setQuantity] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<string>('');
-  const [selectedCutlery, setSelectedCutlery] = useState<string>('');
-  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
-  const { sizeOptions, cutleryOptions, extraOptions } = product;
+export default function Quantity({ product }: QuantityProps) {
+  const methods = useFormContext();
+
+  const { watch, setValue } = methods;
+
+  const quantity = watch('quantity');
+  const selectedSize = watch('selectedSize');
+  const selectedCutlery = watch('selectedCutlery');
+  const selectedExtras = watch('selectedExtras') || [];
+
+  const { sizeOptions, extraOptions, cutleryOptions } = product;
 
   // Calculate current price based on selected options
   const calculateCurrentPrice = () => {
@@ -25,7 +30,7 @@ export default function ProductHeader({ product }: QuantityProps) {
     if (sizeOptions?.items && selectedSize) {
       const size = sizeOptions?.items.find((s) => s.id === selectedSize);
       if (size) {
-        basePrice = product.discountPrice || product.price;
+        basePrice = size.discountPrice > 0 ? size.discountPrice : size.price;
       }
     }
 
@@ -52,6 +57,16 @@ export default function ProductHeader({ product }: QuantityProps) {
     return basePrice * quantity;
   };
 
+  const incrementQuantity = () => {
+    setValue('quantity', quantity + 1);
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 0) {
+      setValue('quantity', quantity - 1);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between border-b pb-4">
       <div className="flex flex-col gap-2">
@@ -71,15 +86,17 @@ export default function ProductHeader({ product }: QuantityProps) {
         {quantity === 0 ? (
           <Button
             className="text-white bg-neutral-500 rounded-lg hover:bg-neutral-700"
-            onClick={() => setQuantity(1)}
+            onClick={incrementQuantity}
+            type="button"
           >
             adicionar
           </Button>
         ) : (
           <div className="flex items-center">
             <button
+              type="button"
               className="items-center justify-center text-teal-400 hover:text-teal-600 cursor-pointer"
-              onClick={() => quantity > 0 && setQuantity(quantity - 1)}
+              onClick={decrementQuantity}
             >
               {quantity === 1 ? (
                 <Trash2 className="size-7" strokeWidth={1.5} />
@@ -91,8 +108,9 @@ export default function ProductHeader({ product }: QuantityProps) {
               {quantity}
             </Typography>
             <button
+              type="button"
               className="items-center justify-center text-teal-400 hover:text-teal-600 cursor-pointer"
-              onClick={() => setQuantity(quantity + 1)}
+              onClick={incrementQuantity}
             >
               <CirclePlus className="size-8" strokeWidth={1} />
             </button>

@@ -44,7 +44,6 @@ const mockCartItems = [
 export default function CheckoutPage() {
   const router = useRouter();
 
-  // Calculate subtotal
   const subtotal = mockCartItems.reduce((acc, item) => {
     const itemTotal = item.price * item.quantity;
     const extrasTotal = item.extras

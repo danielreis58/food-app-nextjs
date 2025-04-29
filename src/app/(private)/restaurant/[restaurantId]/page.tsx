@@ -36,7 +36,6 @@ export default function RestaurantDetailsPage() {
     <div className="flex flex-col w-full">
       <RestaurantHeader restaurant={restaurant} />
 
-      {/* Categorias de produtos */}
       <div className="flex flex-col gap-1 bg-neutral-100">
         {restaurant.productCategories.map((category) => (
           <ProductAccordion

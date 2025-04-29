@@ -6,6 +6,7 @@ import { type Product } from '@/constants/mock';
 type InfoProps = {
   product: Product;
 };
+
 export default function Info({ product }: InfoProps) {
   const { sizeOptions } = product;
   return (

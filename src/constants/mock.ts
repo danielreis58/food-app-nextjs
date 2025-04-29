@@ -60,7 +60,6 @@ export interface ProductOptionGroup {
     | ProductExtra[];
 }
 
-// Interface para produtos
 export interface Product {
   id: string;
   name: string;
@@ -76,7 +75,6 @@ export interface Product {
   extraOptions?: ProductOptionGroup;
 }
 
-// Interface para categorias de produtos no restaurante
 export interface ProductCategory {
   id: string;
   name: string;
@@ -84,7 +82,6 @@ export interface ProductCategory {
   products: Product[];
 }
 
-// Interface principal de restaurante com informações adicionais
 export interface Restaurant {
   id: string;
   name: string;
