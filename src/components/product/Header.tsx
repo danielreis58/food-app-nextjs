@@ -13,7 +13,7 @@ export default function Header({ product }: HeaderProps) {
 
   return (
     <div className="flex items-center p-4 border-b">
-      <button onClick={() => router.back()} className="mr-2">
+      <button onClick={() => router.back()} className="mr-2 cursor-pointer">
         <ChevronLeft className="size-5 text-neutral-800" />
       </button>
       <Typography variant="16-bold-700">{product.name}</Typography>
