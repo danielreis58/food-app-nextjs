@@ -13,13 +13,12 @@ import Quantity from '@/components/product/Quantity';
 import Sizes from '@/components/product/Sizes';
 import { Restaurant, restaurants, type Product } from '@/constants/mock';
 import { type ProductFormValues } from '@/validators/products';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const router = useRouter();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant>();
@@ -27,11 +26,7 @@ export default function ProductDetailPage() {
 
   const methods = useFormContext<ProductFormValues>();
 
-  const { setValue, handleSubmit } = methods;
-
-  const onSubmit = () => {
-    router.push('/checkout');
-  };
+  const { setValue } = methods;
 
   useEffect(() => {
     const restaurantId = params.restaurantId as string;
@@ -84,7 +79,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <div>
       <Header product={product} />
 
       <CoverImage product={product} />
@@ -104,6 +99,6 @@ export default function ProductDetailPage() {
 
         <Notes />
       </div>
-    </form>
+    </div>
   );
 }
