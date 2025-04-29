@@ -14,16 +14,15 @@ export default function RestaurantDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Find the restaurant by ID
-    const id = params.id as string;
-    const foundRestaurant = restaurants.find((r) => r.id === id);
+    const restaurantId = params.restaurantId as string;
+    const foundRestaurant = restaurants.find((r) => r.id === restaurantId);
 
     if (foundRestaurant) {
       setRestaurant(foundRestaurant);
     }
 
     setLoading(false);
-  }, [params.id]);
+  }, [params.restaurantId]);
 
   if (loading) {
     return <Loading />;
