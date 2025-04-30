@@ -49,5 +49,12 @@
     "ExistingItensFromAnotherRestaurant": "você já tem itens de outro restaurante no seu carrinho. você gostaria de removê-los?",
     "Yes": "sim",
     "No": "não"
+  },
+  "SignIn": {
+    "WelcomeBack": "bem-vindo de volta",
+    "Email": "e-mail",
+    "Password": "senha",
+    "SignIn": "entrar",
+    "SigningIn": "entrando..."
   }
 }

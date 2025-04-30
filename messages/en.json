@@ -49,5 +49,12 @@
     "ExistingItensFromAnotherRestaurant": "you already have items from another restaurant in your cart. Would you like to remove them?",
     "Yes": "yes",
     "No": "no"
+  },
+  "SignIn": {
+    "WelcomeBack": "welcome back",
+    "Email": "email",
+    "Password": "password",
+    "SignIn": "sign in",
+    "SigningIn": "signing in..."
   }
 }

@@ -1,10 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SignIn() {
+  const t = useTranslations();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +24,7 @@ export default function SignIn() {
     <main className="min-h-screen bg-[var(--color-background)] flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center text-[var(--color-text)] mb-6">
-          Welcome Back
+          {t('SignIn.WelcomeBack')}
         </h1>
 
         <div className="space-y-4">
@@ -31,7 +33,7 @@ export default function SignIn() {
               htmlFor="email"
               className="block text-sm font-medium text-[var(--color-text)] mb-1"
             >
-              Email
+              {t('SignIn.Email')}
             </label>
             <input
               type="email"
@@ -47,7 +49,7 @@ export default function SignIn() {
               htmlFor="password"
               className="block text-sm font-medium text-[var(--color-text)] mb-1"
             >
-              Password
+              {t('SignIn.Password')}
             </label>
             <input
               type="password"
@@ -63,7 +65,7 @@ export default function SignIn() {
             disabled={isLoading}
             className="w-full py-2 px-4"
           >
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? t('SignIn.SigningIn') : t('SignIn.SignIn')}
           </Button>
         </div>
       </div>
