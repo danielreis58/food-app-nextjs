@@ -1,5 +1,9 @@
 # Food App Next.js
 
+
+https://github.com/user-attachments/assets/d014eb01-2d37-4cb5-803e-ab76b8f09476
+
+
 This is a simple food app built with Next.js, TypeScript, Tailwind CSS, It allows users to sign in and view a list of restaurants. The app is designed to be responsive and works well on both desktop and mobile devices.
 
 ## Features
