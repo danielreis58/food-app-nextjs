@@ -44,5 +44,10 @@
   "Note": {
     "SomeNote": "any notes?",
     "NotePlaceholder": "any item notes? • optional e.g. remove ingredient, doneness of dish"
+  },
+  "Dialog": {
+    "ExistingItensFromAnotherRestaurant": "you already have items from another restaurant in your cart. Would you like to remove them?",
+    "Yes": "yes",
+    "No": "no"
   }
 }

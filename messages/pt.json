@@ -44,5 +44,10 @@
   "Note": {
     "SomeNote": "alguma observação?",
     "NotePlaceholder": "alguma observação do item? • opcional ex: tirar algum ingrediente, ponto do prato"
+  },
+  "Dialog": {
+    "ExistingItensFromAnotherRestaurant": "você já tem itens de outro restaurante no seu carrinho. você gostaria de removê-los?",
+    "Yes": "sim",
+    "No": "não"
   }
 }

@@ -8,14 +8,11 @@ import ProductAccordion from '@/components/restaurant/ProductAccordion';
 import { restaurants, type Restaurant } from '@/constants/mock';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { CartFormValues } from '../../../../validators/cart';
 
 export default function RestaurantDetailsPage() {
   const params = useParams();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
-  const methods = useFormContext<CartFormValues>();
 
   useEffect(() => {
     const restaurantId = params.restaurantId as string;
@@ -23,9 +20,6 @@ export default function RestaurantDetailsPage() {
 
     if (foundRestaurant) {
       setRestaurant(foundRestaurant);
-      methods.setValue('selectedRestaurantId', foundRestaurant.id, {
-        shouldValidate: true,
-      });
     }
 
     setLoading(false);

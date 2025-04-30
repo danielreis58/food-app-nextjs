@@ -1,5 +1,6 @@
 'use client';
 
+import RestaurantChangeDialog from '@/components/dialogs/RestaurantChangeDialog';
 import Loading from '@/components/Loading';
 import NotFound from '@/components/NotFound';
 import Addons from '@/components/product/Addons';
@@ -24,6 +25,8 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [loading, setLoading] = useState(true);
+  const [showRestaurantChangeDialog, setShowRestaurantChangeDialog] =
+    useState(false);
 
   const methods = useFormContext<CartFormValues>();
 
@@ -90,14 +93,23 @@ export default function ProductDetailPage() {
           .getValues('selectedProducts')
           .find((p: ProductFormValues) => p.id === foundProduct.id);
 
-        if (!existingProduct) {
-          setValue(
-            'selectedProducts',
-            [...methods.getValues('selectedProducts'), newProduct],
-            {
-              shouldValidate: true,
-            },
-          );
+        const existingRestaurantId = methods.getValues('selectedRestaurantId');
+
+        if (existingRestaurantId && existingRestaurantId !== restaurantId) {
+          setShowRestaurantChangeDialog(true);
+        } else {
+          methods.setValue('selectedRestaurantId', foundRestaurant.id, {
+            shouldValidate: true,
+          });
+          if (!existingProduct) {
+            setValue(
+              'selectedProducts',
+              [...methods.getValues('selectedProducts'), newProduct],
+              {
+                shouldValidate: true,
+              },
+            );
+          }
         }
       }
     }
@@ -109,7 +121,7 @@ export default function ProductDetailPage() {
     return <Loading />;
   }
 
-  if (!product || !restaurant || !selectedProduct) {
+  if (!product || !restaurant) {
     return <NotFound />;
   }
 
@@ -122,11 +134,13 @@ export default function ProductDetailPage() {
       <div className="p-4 flex flex-col gap-4">
         <Info product={product} />
 
-        <Quantity
-          product={product}
-          productIdx={productIdx}
-          selectedProduct={selectedProduct}
-        />
+        {selectedProduct && (
+          <Quantity
+            product={product}
+            productIdx={productIdx}
+            selectedProduct={selectedProduct}
+          />
+        )}
 
         <Sizes product={product} productIdx={productIdx} />
 
@@ -138,6 +152,7 @@ export default function ProductDetailPage() {
 
         <Notes productIdx={productIdx} />
       </div>
+      {showRestaurantChangeDialog && <RestaurantChangeDialog />}
     </div>
   );
 }
