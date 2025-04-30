@@ -56,4 +56,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Accessing deployed app
 
-You can access the deployed app at [here](https://food-app-nextjs-6kj57a6af-daniel-reis-projects-6e769863.vercel.app/sign-in).
+You can access the deployed app at [here](https://food-app-nextjs-git-main-daniel-reis-projects-6e769863.vercel.app).
