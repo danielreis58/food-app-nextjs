@@ -7,9 +7,10 @@ import { getSelectionText } from '../../lib/utils';
 
 type ExtrasProps = {
   product: Product;
+  productIdx: number;
 };
 
-export default function Extras({ product }: ExtrasProps) {
+export default function Extras({ product, productIdx }: ExtrasProps) {
   const { extraOptions } = product;
 
   return (
@@ -30,7 +31,7 @@ export default function Extras({ product }: ExtrasProps) {
             <CheckboxOption
               key={extra.id}
               id={extra.id}
-              fieldName="selectedExtras"
+              fieldName={`selectedProducts.${productIdx}.selectedExtraIds`}
               label={extra.name}
               price={extra.price}
             />

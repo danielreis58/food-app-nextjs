@@ -6,22 +6,32 @@ import { type Product } from '@/constants/mock';
 import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
+import { CartFormValues } from '../../validators/cart';
+import { ProductFormValues } from '../../validators/products';
 
 type QuantityProps = {
   product: Product;
+  productIdx: number;
+  selectedProduct: ProductFormValues;
 };
 
-export default function Quantity({ product }: QuantityProps) {
+export default function Quantity({
+  product,
+  productIdx,
+  selectedProduct,
+}: QuantityProps) {
   const t = useTranslations();
 
-  const methods = useFormContext();
+  const methods = useFormContext<CartFormValues>();
 
-  const { watch, setValue } = methods;
+  const { setValue } = methods;
 
-  const quantity = watch('quantity');
-  const selectedSize = watch('selectedSize');
-  const selectedCutlery = watch('selectedCutlery');
-  const selectedExtras = watch('selectedExtras') || [];
+  const {
+    quantity = 0,
+    selectedSizeId,
+    selectedCutleryId,
+    selectedExtraIds,
+  } = selectedProduct || {};
 
   const { sizeOptions, extraOptions, cutleryOptions } = product;
 
@@ -30,16 +40,20 @@ export default function Quantity({ product }: QuantityProps) {
     let basePrice = product.discountPrice || product.price;
 
     // Add size price
-    if (sizeOptions?.items && selectedSize) {
-      const size = sizeOptions?.items.find((s) => s.id === selectedSize);
+    if (sizeOptions?.items && selectedSizeId) {
+      const size = sizeOptions?.items.find((s) => s.id === selectedSizeId);
       if (size) {
         basePrice = size.discountPrice > 0 ? size.discountPrice : size.price;
       }
     }
 
     // Add extras price
-    if (extraOptions?.items && selectedExtras.length > 0) {
-      for (const extraId of selectedExtras) {
+    if (
+      extraOptions?.items &&
+      selectedExtraIds &&
+      selectedExtraIds.length > 0
+    ) {
+      for (const extraId of selectedExtraIds) {
         const extra = extraOptions?.items.find((e) => e.id === extraId);
         if (extra) {
           basePrice += extra.price;
@@ -48,9 +62,9 @@ export default function Quantity({ product }: QuantityProps) {
     }
 
     // Add cutlery price
-    if (cutleryOptions?.items && selectedCutlery) {
+    if (cutleryOptions?.items && selectedCutleryId) {
       const cutlery = cutleryOptions?.items.find(
-        (c) => c.id === selectedCutlery,
+        (c) => c.id === selectedCutleryId,
       );
       if (cutlery) {
         basePrice += cutlery.price;
@@ -61,12 +75,22 @@ export default function Quantity({ product }: QuantityProps) {
   };
 
   const incrementQuantity = () => {
-    setValue('quantity', quantity + 1);
+    const updatedProduct = {
+      ...selectedProduct,
+      quantity: quantity + 1,
+    };
+
+    setValue(`selectedProducts.${productIdx}`, updatedProduct);
   };
 
   const decrementQuantity = () => {
     if (quantity > 0) {
-      setValue('quantity', quantity - 1);
+      const updatedProduct = {
+        ...selectedProduct,
+        quantity: quantity - 1,
+      };
+
+      setValue(`selectedProducts.${productIdx}`, updatedProduct);
     }
   };
 

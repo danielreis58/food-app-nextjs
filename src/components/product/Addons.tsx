@@ -7,9 +7,10 @@ import { getSelectionText } from '../../lib/utils';
 
 type AddonsProps = {
   product: Product;
+  productIdx: number;
 };
 
-export default function Addons({ product }: AddonsProps) {
+export default function Addons({ product, productIdx }: AddonsProps) {
   const { addonOptions } = product;
 
   return (
@@ -30,7 +31,7 @@ export default function Addons({ product }: AddonsProps) {
             <CheckboxOption
               key={addon.id}
               id={addon.id}
-              fieldName="selectedAddons"
+              fieldName={`selectedProducts.${productIdx}.selectedAddonIds`}
               label={addon.name}
               price={addon.price}
             />

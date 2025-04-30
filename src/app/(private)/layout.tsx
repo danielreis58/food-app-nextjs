@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import Footer from '../../components/product/Footer';
 import {
-  ProductFormValues,
+  cartFormSchema,
+  CartFormValues,
   defaultValues,
-  productFormSchema,
-} from '../../validators/products';
+} from '../../validators/cart';
 
 export default function PrivateLayout({
   children,
@@ -18,8 +18,8 @@ export default function PrivateLayout({
 }>) {
   const router = useRouter();
 
-  const methods = useForm<ProductFormValues>({
-    resolver: zodResolver(productFormSchema),
+  const methods = useForm<CartFormValues>({
+    resolver: zodResolver(cartFormSchema),
     defaultValues,
   });
 
@@ -35,6 +35,7 @@ export default function PrivateLayout({
         <div className="min-h-screen">
           <Header />
           <main className="min-h-screen">{children}</main>
+
           <Footer />
         </div>
       </form>

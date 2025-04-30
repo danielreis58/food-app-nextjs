@@ -4,11 +4,15 @@ import Typography from '@/components/Typography';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup';
 import { CircleDollarSign } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { CartFormValues } from '../../validators/cart';
 
 type RadioOptionProps = {
   id: string;
   name: string;
-  fieldName: string;
+  fieldName:
+    | `selectedProducts.${number}.selectedSizeId`
+    | `selectedProducts.${number}.selectedCutleryId`
+    | `selectedProducts.${number}.selectedExtraIds`;
   label: string;
   price?: number;
   discountPrice?: number;
@@ -24,7 +28,7 @@ export default function RadioOption({
   discountPrice = 0,
   showDiscount = false,
 }: RadioOptionProps) {
-  const { control } = useFormContext();
+  const { control } = useFormContext<CartFormValues>();
 
   return (
     <Controller

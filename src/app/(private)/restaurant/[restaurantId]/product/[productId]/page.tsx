@@ -12,10 +12,11 @@ import Notes from '@/components/product/Notes';
 import Quantity from '@/components/product/Quantity';
 import Sizes from '@/components/product/Sizes';
 import { Restaurant, restaurants, type Product } from '@/constants/mock';
-import { type ProductFormValues } from '@/validators/products';
+import { CartFormValues } from '@/validators/cart';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { ProductFormValues } from '../../../../../../validators/products';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -24,9 +25,17 @@ export default function ProductDetailPage() {
   const [restaurant, setRestaurant] = useState<Restaurant>();
   const [loading, setLoading] = useState(true);
 
-  const methods = useFormContext<ProductFormValues>();
+  const methods = useFormContext<CartFormValues>();
 
   const { setValue } = methods;
+
+  const selectedProduct = methods
+    .watch('selectedProducts')
+    .find((p: ProductFormValues) => p.id === product?.id);
+
+  const productIdx = methods
+    .watch('selectedProducts')
+    .findIndex((p: ProductFormValues) => p.id === product?.id);
 
   useEffect(() => {
     const restaurantId = params.restaurantId as string;
@@ -51,17 +60,43 @@ export default function ProductDetailPage() {
       if (foundProduct) {
         setProduct(foundProduct);
 
+        let defaultSize = foundProduct.sizeOptions?.items[0];
         // Set default size if available
         if (
           foundProduct.sizeOptions?.items &&
           foundProduct.sizeOptions?.items.length > 0
         ) {
-          const defaultSize = foundProduct.sizeOptions?.items.find(
+          defaultSize = foundProduct.sizeOptions?.items.find(
             (s) => s.isDefault,
           );
+        }
+        const newProduct: ProductFormValues = {
+          id: foundProduct.id,
+          name: foundProduct.name,
+          description: foundProduct.description,
+          price: foundProduct.price,
+          discountPrice: foundProduct.discountPrice,
+          tags: foundProduct.tags,
+          category: foundProduct.category,
+          quantity: 0,
+          selectedSizeId: defaultSize?.id,
+          selectedAddonIds: [],
+          selectedCutleryId: '',
+          selectedExtraIds: [],
+          notes: '',
+        };
+
+        const existingProduct = methods
+          .getValues('selectedProducts')
+          .find((p: ProductFormValues) => p.id === foundProduct.id);
+
+        if (!existingProduct) {
           setValue(
-            'selectedSize',
-            defaultSize?.id || foundProduct.sizeOptions?.items[0].id,
+            'selectedProducts',
+            [...methods.getValues('selectedProducts'), newProduct],
+            {
+              shouldValidate: true,
+            },
           );
         }
       }
@@ -74,7 +109,7 @@ export default function ProductDetailPage() {
     return <Loading />;
   }
 
-  if (!product || !restaurant) {
+  if (!product || !restaurant || !selectedProduct) {
     return <NotFound />;
   }
 
@@ -87,17 +122,21 @@ export default function ProductDetailPage() {
       <div className="p-4 flex flex-col gap-4">
         <Info product={product} />
 
-        <Quantity product={product} />
+        <Quantity
+          product={product}
+          productIdx={productIdx}
+          selectedProduct={selectedProduct}
+        />
 
-        <Sizes product={product} />
+        <Sizes product={product} productIdx={productIdx} />
 
-        <Addons product={product} />
+        <Addons product={product} productIdx={productIdx} />
 
-        <Cutlery product={product} />
+        <Cutlery product={product} productIdx={productIdx} />
 
-        <Extras product={product} />
+        <Extras product={product} productIdx={productIdx} />
 
-        <Notes />
+        <Notes productIdx={productIdx} />
       </div>
     </div>
   );

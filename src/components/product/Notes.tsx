@@ -1,17 +1,20 @@
 'use client';
 
 import Typography from '@/components/Typography';
-import { type ProductFormValues } from '@/validators/products';
 import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
+import { CartFormValues } from '../../validators/cart';
 
-export default function Notes() {
+type NotesProps = {
+  productIdx: number;
+};
+export default function Notes({ productIdx }: NotesProps) {
   const t = useTranslations();
-  const methods = useFormContext<ProductFormValues>();
+  const methods = useFormContext<CartFormValues>();
 
   const { watch, setValue } = methods;
 
-  const notes = watch('notes');
+  const notes = watch(`selectedProducts.${productIdx}.notes`);
 
   return (
     <div className="flex flex-col gap-4">
@@ -30,7 +33,11 @@ export default function Notes() {
         placeholder={t('Note.NotePlaceholder')}
         rows={3}
         value={notes}
-        onChange={(e) => setValue('notes', e.target.value)}
+        onChange={(e) =>
+          setValue(`selectedProducts.${productIdx}.notes`, e.target.value, {
+            shouldValidate: true,
+          })
+        }
       ></textarea>
     </div>
   );

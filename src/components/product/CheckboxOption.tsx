@@ -3,10 +3,13 @@
 import Typography from '@/components/Typography';
 import { Checkbox } from '@/components/ui/Checkbox';
 import { Controller, useFormContext } from 'react-hook-form';
+import { CartFormValues } from '../../validators/cart';
 
 type CheckboxOptionProps = {
   id: string;
-  fieldName: string;
+  fieldName:
+    | `selectedProducts.${number}.selectedExtraIds`
+    | `selectedProducts.${number}.selectedAddonIds`;
   label: string;
   price?: number;
 };
@@ -17,14 +20,14 @@ export default function CheckboxOption({
   label,
   price = 0,
 }: CheckboxOptionProps) {
-  const { control } = useFormContext();
+  const { control } = useFormContext<CartFormValues>();
 
   return (
     <Controller
       control={control}
       name={fieldName}
       render={({ field }) => {
-        const values = field.value || [];
+        const values = Array.isArray(field.value) ? field.value : [];
         const checked = Array.isArray(values) && values.includes(id);
 
         const handleChange = (checked: boolean) => {

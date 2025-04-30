@@ -7,9 +7,10 @@ import { getSelectionText } from '../../lib/utils';
 
 type CutleryProps = {
   product: Product;
+  productIdx: number;
 };
 
-export default function Cutlery({ product }: CutleryProps) {
+export default function Cutlery({ product, productIdx }: CutleryProps) {
   const { cutleryOptions } = product;
 
   return (
@@ -31,7 +32,7 @@ export default function Cutlery({ product }: CutleryProps) {
               key={cutlery.id}
               id={cutlery.id}
               name="cutlery"
-              fieldName="selectedCutlery"
+              fieldName={`selectedProducts.${productIdx}.selectedCutleryId`}
               label={cutlery.name}
               price={cutlery.price}
             />

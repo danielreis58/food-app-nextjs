@@ -376,7 +376,7 @@ export const restaurants: Restaurant[] = [
         products: [
           {
             id: uuidv4(),
-            name: 'Coca-cola',
+            name: 'coca-cola',
             description: 'Lata 350ml',
             price: 5.0,
             discountPrice: 0,
@@ -385,7 +385,7 @@ export const restaurants: Restaurant[] = [
           },
           {
             id: uuidv4(),
-            name: 'Fanta laranja',
+            name: 'fanta laranja',
             description: 'Lata 350ml',
             price: 5.0,
             discountPrice: 0,
@@ -394,7 +394,7 @@ export const restaurants: Restaurant[] = [
           },
           {
             id: uuidv4(),
-            name: 'Guaraná antarctica',
+            name: 'guaraná antarctica',
             description: 'Lata 350ml',
             price: 5.0,
             discountPrice: 0,
@@ -403,7 +403,7 @@ export const restaurants: Restaurant[] = [
           },
           {
             id: uuidv4(),
-            name: 'Suco Prats laranja',
+            name: 'suco prats laranja',
             description: 'Garrafa 450ml',
             price: 6.0,
             discountPrice: 0,
@@ -412,7 +412,7 @@ export const restaurants: Restaurant[] = [
           },
           {
             id: uuidv4(),
-            name: 'Água sem gás',
+            name: 'água sem gás',
             description: 'Garrafa 500ml',
             price: 3.0,
             discountPrice: 0,
