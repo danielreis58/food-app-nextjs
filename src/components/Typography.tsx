@@ -2,16 +2,17 @@ import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
 type TypographyVariant =
-  | '16-bold-700'
+  | '12-semi-600'
   | '12-bold-700'
+  | '14-regular-400'
+  | '14-semi-600'
   | '14-bold-700'
+  | '14-bold-800'
+  | '16-bold-700'
   | '18-extrabold-800'
   | '20-bold-700'
   | '20-bold-800'
-  | '20-extrabold-800'
-  | '14-bold-800'
-  | '14-semi-600'
-  | '14-regular-400';
+  | '20-extrabold-800';
 
 type TypographyElement =
   | 'h1'
@@ -38,6 +39,7 @@ export const Typography = ({
   children,
 }: TypographyProps) => {
   const variants: Record<TypographyProps['variant'], string> = {
+    '12-semi-600': 'text-[12px] font-semibold leading-[100%]',
     '12-bold-700': 'text-[12px] font-bold leading-[100%]',
     '14-regular-400': 'text-[14px] font-normal leading-[19px]',
     '14-semi-600': 'text-[14px] font-semibold leading-[21px]',

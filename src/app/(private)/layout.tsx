@@ -35,7 +35,6 @@ export default function PrivateLayout({
         <div className="min-h-screen">
           <Header />
           <main className="min-h-screen">{children}</main>
-
           <Footer />
         </div>
       </form>

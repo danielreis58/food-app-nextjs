@@ -3,11 +3,12 @@
 import Typography from '@/components/Typography';
 import { Button } from '@/components/ui/Button';
 import { type Product } from '@/constants/mock';
-import { CircleMinus, CirclePlus, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useFormContext } from 'react-hook-form';
+import { calculateCurrentPrice } from '../../lib/utils';
 import { CartFormValues } from '../../validators/cart';
 import { ProductFormValues } from '../../validators/products';
+import QuantityControl from '../QuantityControl';
 
 type QuantityProps = {
   product: Product;
@@ -26,53 +27,7 @@ export default function Quantity({
 
   const { setValue } = methods;
 
-  const {
-    quantity = 0,
-    selectedSizeId,
-    selectedCutleryId,
-    selectedExtraIds,
-  } = selectedProduct || {};
-
-  const { sizeOptions, extraOptions, cutleryOptions } = product;
-
-  // Calculate current price based on selected options
-  const calculateCurrentPrice = () => {
-    let basePrice = product.discountPrice || product.price;
-
-    // Add size price
-    if (sizeOptions?.items && selectedSizeId) {
-      const size = sizeOptions?.items.find((s) => s.id === selectedSizeId);
-      if (size) {
-        basePrice = size.discountPrice > 0 ? size.discountPrice : size.price;
-      }
-    }
-
-    // Add extras price
-    if (
-      extraOptions?.items &&
-      selectedExtraIds &&
-      selectedExtraIds.length > 0
-    ) {
-      for (const extraId of selectedExtraIds) {
-        const extra = extraOptions?.items.find((e) => e.id === extraId);
-        if (extra) {
-          basePrice += extra.price;
-        }
-      }
-    }
-
-    // Add cutlery price
-    if (cutleryOptions?.items && selectedCutleryId) {
-      const cutlery = cutleryOptions?.items.find(
-        (c) => c.id === selectedCutleryId,
-      );
-      if (cutlery) {
-        basePrice += cutlery.price;
-      }
-    }
-
-    return basePrice * quantity;
-  };
+  const { quantity = 0 } = selectedProduct || {};
 
   const incrementQuantity = () => {
     const updatedProduct = {
@@ -81,17 +36,6 @@ export default function Quantity({
     };
 
     setValue(`selectedProducts.${productIdx}`, updatedProduct);
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 0) {
-      const updatedProduct = {
-        ...selectedProduct,
-        quantity: quantity - 1,
-      };
-
-      setValue(`selectedProducts.${productIdx}`, updatedProduct);
-    }
   };
 
   return (
@@ -105,7 +49,7 @@ export default function Quantity({
             {t('Quantity.Total')}:
           </Typography>
           <Typography variant="14-bold-700" className="text-neutral-700">
-            R$ {calculateCurrentPrice().toFixed(2)}
+            R$ {calculateCurrentPrice(product, selectedProduct).toFixed(2)}
           </Typography>
         </div>
       </div>
@@ -119,29 +63,7 @@ export default function Quantity({
             {t('Common.Add')}
           </Button>
         ) : (
-          <div className="flex items-center">
-            <button
-              type="button"
-              className="items-center justify-center text-teal-400 hover:text-teal-600 cursor-pointer"
-              onClick={decrementQuantity}
-            >
-              {quantity === 1 ? (
-                <Trash2 className="size-7" strokeWidth={1.5} />
-              ) : (
-                <CircleMinus className="size-8" strokeWidth={1} />
-              )}
-            </button>
-            <Typography variant="16-bold-700" className="mx-4">
-              {quantity}
-            </Typography>
-            <button
-              type="button"
-              className="items-center justify-center text-teal-400 hover:text-teal-600 cursor-pointer"
-              onClick={incrementQuantity}
-            >
-              <CirclePlus className="size-8" strokeWidth={1} />
-            </button>
-          </div>
+          <QuantityControl productIdx={0} selectedProduct={selectedProduct} />
         )}
       </div>
     </div>

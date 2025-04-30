@@ -5,7 +5,8 @@
     "Add": "adicionar",
     "Optional": "opcional",
     "From": "a partir de",
-    "Required": "obrigatório"
+    "Required": "obrigatório",
+    "Edit": "editar"
   },
   "Location": {
     "DeliveringIn": "entregando em"
@@ -32,7 +33,9 @@
   },
   "ProductFooter": {
     "MadeWithLoveInMaringa": "feito com 💜 em maringá-PR",
-    "SeeTicket": "ver ticket"
+    "SeeTicket": "ver ticket",
+    "Subtotal": "subtotal",
+    "GoToPayment": "ir para o pagamento"
   },
   "Quantity": {
     "HowMany": "quantos?",
